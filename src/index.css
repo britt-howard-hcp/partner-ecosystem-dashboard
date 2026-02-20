@@ -1,0 +1,59 @@
+@import "tailwindcss";
+
+@theme {
+  --color-surface-900: #0f1117;
+  --color-surface-800: #161822;
+  --color-surface-700: #1e2030;
+  --color-surface-600: #282a3a;
+  --color-accent-500: #6366f1;
+  --color-accent-400: #818cf8;
+  --color-stage-evaluating: #f59e0b;
+  --color-stage-onboarding: #3b82f6;
+  --color-stage-active: #10b981;
+  --color-stage-declined: #ef4444;
+  --color-cat-ai: #8b5cf6;
+  --color-cat-comm: #06b6d4;
+  --color-cat-marketing: #f59e0b;
+  --color-cat-scheduling: #10b981;
+  --color-cat-other: #ec4899;
+  --color-text-primary: #f1f5f9;
+  --color-text-secondary: #94a3b8;
+  --color-text-muted: #64748b;
+  --color-border: #2e3348;
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  background-color: var(--color-surface-900);
+  color: var(--color-text-primary);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-surface-900);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-surface-600);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-muted);
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-in {
+  animation: slideIn 0.25s ease-out forwards;
+}
