@@ -3,45 +3,66 @@ import { usePartners } from '../../hooks/usePartners';
 import { useChartData } from '../../hooks/useChartData';
 
 export function NarrativeBlock() {
-  const { partners, partnersByStage } = usePartners();
-  const { categoryVolumeData } = useChartData();
+  const { partners, partnersByStatus, coreConflictCount, mutualHcpCustomers } = usePartners();
+  const { classificationVolumeData } = useChartData();
 
   const narrative = useMemo(() => {
     if (partners.length === 0) return 'No partners match the current filters.';
 
     const total = partners.length;
-    const active = partnersByStage.Active.length;
-    const evaluating = partnersByStage.Evaluating.length;
-    const declined = partnersByStage.Declined.length;
-
-    const topCategory = categoryVolumeData[0];
+    const active = partnersByStatus.Active.length;
+    const evaluating = partnersByStatus.Evaluating.length;
+    const declined = partnersByStatus.Declined.length;
+    const onboarding = partnersByStatus.Onboarding.length;
 
     const sentences: string[] = [];
 
-    sentences.push(
-      `Viewing ${total} partner${total === 1 ? '' : 's'} across the ecosystem.`,
-    );
-
-    if (active > 0 || evaluating > 0) {
-      const parts: string[] = [];
-      if (active > 0) parts.push(`${active} active`);
-      if (evaluating > 0) parts.push(`${evaluating} in evaluation`);
-      sentences.push(`Currently ${parts.join(' and ')}.`);
+    // Opening — reference HCP, frame selectivity positively
+    if (total > 0 && active > 0) {
+      const selectivityRate = Math.round(((total - active) / total) * 100);
+      sentences.push(
+        `HCP's integration ecosystem has processed ${total} partner requests, maintaining a ${selectivityRate}% selectivity rate with ${active} live integration${active === 1 ? '' : 's'}.`,
+      );
+    } else {
+      sentences.push(`Viewing ${total} partner request${total === 1 ? '' : 's'} in HCP's ecosystem.`);
     }
 
-    if (topCategory && topCategory.count > 0) {
+    // Pipeline activity
+    const pipelineParts: string[] = [];
+    if (evaluating > 0) pipelineParts.push(`${evaluating} in evaluation`);
+    if (onboarding > 0) pipelineParts.push(`${onboarding} onboarding`);
+    if (pipelineParts.length > 0) {
+      sentences.push(`Current pipeline: ${pipelineParts.join(', ')}.`);
+    }
+
+    // Classification insight
+    if (coreConflictCount > 0) {
       sentences.push(
-        `${topCategory.category} leads with ${topCategory.count} partner${topCategory.count === 1 ? '' : 's'}.`,
+        `${coreConflictCount} Core Conflict request${coreConflictCount === 1 ? '' : 's'} identified — ${
+          coreConflictCount === declined
+            ? 'all appropriately declined.'
+            : 'flagged for competitive overlap with HCP\'s core product.'
+        }`,
       );
     }
 
-    if (declined > 0) {
-      const declineRate = Math.round((declined / total) * 100);
-      sentences.push(`${declineRate}% of partners have been declined.`);
+    // Top classification
+    const topCls = classificationVolumeData[0];
+    if (topCls && topCls.count > 0) {
+      sentences.push(
+        `${topCls.classification} leads classification volume with ${topCls.count} partner${topCls.count === 1 ? '' : 's'}.`,
+      );
+    }
+
+    // Mutual customers
+    if (mutualHcpCustomers > 0) {
+      sentences.push(
+        `Active integrations serve ${mutualHcpCustomers.toLocaleString()} mutual HCP customers.`,
+      );
     }
 
     return sentences.join(' ');
-  }, [partners, partnersByStage, categoryVolumeData]);
+  }, [partners, partnersByStatus, coreConflictCount, mutualHcpCustomers, classificationVolumeData]);
 
   return (
     <section className="px-6 py-3">

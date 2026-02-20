@@ -1,5 +1,5 @@
 import type { Partner } from '../types/partner';
-import { fakePartners } from '../data/fake-partners';
+import { partners } from '../data/partners';
 
 export interface PartnerService {
   getAll(): Promise<Partner[]>;
@@ -9,7 +9,7 @@ export interface PartnerService {
 
 const fakePartnerService: PartnerService = {
   async getAll() {
-    return fakePartners;
+    return partners;
   },
 };
 

@@ -5,84 +5,74 @@ interface ChatRule {
 
 const rules: ChatRule[] = [
   {
-    keywords: ['how many', 'total', 'count', 'number of partners'],
+    keywords: ['how many', 'total', 'count', 'number of'],
     response:
-      'There are currently 28 partners in the ecosystem. 10 are in Evaluating, 4 in Onboarding, 4 Active, and 10 Declined.',
+      'HCP\'s ecosystem has processed 35 partner requests. 12 are Active (live integrations), 8 are in Evaluation, 3 are Onboarding, and 12 have been Declined.',
   },
   {
-    keywords: ['category', 'categories', 'breakdown'],
+    keywords: ['classification', 'classifications', 'breakdown', 'core conflict', 'controlled', 'open'],
     response:
-      'Category breakdown: AI & Automation Tools (6), Customer Communication Tools (5), Marketing Platforms (6), Scheduling & Dispatch Tools (6), Other Trade-Specific Platforms (5). Marketing and Scheduling are tied for the largest groups.',
+      'Classification breakdown: 8 Core Conflict (competitive with HCP core), 12 Controlled (competitive-adjacent, strategic approval needed), and 15 Open (complementary, ROI-dependent). Open classifications make up the largest group.',
   },
   {
-    keywords: ['active', 'live', 'launched'],
+    keywords: ['active', 'live', 'launched', 'integration'],
     response:
-      'There are 4 active partners with live integrations: ServiceWire CRM (API), BookLocal Ads (Data Sync), AutoInvoice Pro (OAuth), and FieldChat (White Label). The earliest went live in June 2024.',
+      'There are 12 live integrations: 5 Product Partnerships (ReviewBridge, PartsNow, ComplianceHub, SafeHire, GreenFlag Insurance) and 7 Ecosystem Partnerships. They collectively serve 37,100 mutual HCP customers.',
   },
   {
-    keywords: ['evaluating', 'evaluate', 'pipeline'],
+    keywords: ['evaluating', 'evaluate', 'pipeline', 'evaluation'],
     response:
-      'The evaluation pipeline has 10 partners. Recent additions include SmartQuote Builder (White Label), HomeRank SEO (API), and PipeBot Analytics (Embedded). Most evaluating partners joined in late 2025.',
+      'The evaluation pipeline has 8 partners. Notable: HomeBase Ops is flagged as Core Conflict (under review), while PayField, CustomerVault, and ChatLeads are Controlled classifications requiring strategic approval. Four Open requests round out the pipeline.',
   },
   {
     keywords: ['onboarding', 'onboard'],
     response:
-      '4 partners are currently onboarding: TechRoute Scheduler (OAuth), ReviewSurge (Embedded), BotAssist AI (API), and ProNotify (Webhook). All are expected to go live in early 2026.',
+      '3 partners are currently onboarding: SmartEstimate (Controlled, API), FleetWorks (Controlled, Webhook), and MaterialSync (Open, API). SmartEstimate and FleetWorks required strategic approval due to feature overlap.',
   },
   {
     keywords: ['declined', 'reject', 'rejected'],
     response:
-      '10 partners have been declined, including QuoteMaster360, InspectBot, and MapRoute Fleet. Common reasons include incompatible tech stacks, budget constraints, and prolonged evaluations.',
+      '12 partners have been declined. 7 were Core Conflict (directly competitive FSM, scheduling, or CRM platforms). 3 were Controlled (insufficient business case). 2 were Open but declined for pricing or maturity reasons.',
   },
   {
-    keywords: ['ai', 'automation', 'artificial intelligence'],
+    keywords: ['product partnership', 'product', 'strategic'],
     response:
-      'There are 6 AI & Automation partners: FieldPulse AI and PipeBot Analytics (Evaluating), BotAssist AI (Onboarding), AutoInvoice Pro (Active), and InspectBot and PriceSync Tools (Declined). AI tools are the fastest-growing category.',
+      'There are 5 Product Partnerships — all Active: ReviewBridge (reputation), PartsNow (parts ordering), ComplianceHub (licensing), SafeHire (background checks), and GreenFlag Insurance (COI verification). These are co-developed strategic integrations.',
   },
   {
-    keywords: ['communication', 'messaging', 'sms', 'chat'],
+    keywords: ['conflict', 'competitive', 'competitor'],
     response:
-      '5 Customer Communication Tools in the ecosystem: CrewLine Messenger and CallTrack Pro (Evaluating), ProNotify (Onboarding), FieldChat (Active), and ChatBridge SMS (Declined).',
+      '8 Core Conflict requests identified — companies with products directly competitive with HCP\'s core scheduling, dispatch, invoicing, or CRM features. 7 have been declined; 1 (HomeBase Ops) is under evaluation review.',
   },
   {
-    keywords: ['marketing', 'ads', 'seo', 'reviews'],
+    keywords: ['mutual', 'customer', 'customers', 'overlap'],
     response:
-      '6 Marketing Platforms: TradeBoost Marketing and HomeRank SEO (Evaluating), ReviewSurge (Onboarding), BookLocal Ads (Active), and AdLocal Express and LeadSpark CRM (Declined).',
-  },
-  {
-    keywords: ['scheduling', 'dispatch', 'route', 'fleet'],
-    response:
-      '6 Scheduling & Dispatch Tools: DispatchGrid Pro and FleetPing GPS (Evaluating), TechRoute Scheduler (Onboarding), and VoiceFlow Dispatch, AutoSchedule HQ, and MapRoute Fleet (Declined). None are currently active — a gap worth watching.',
+      'Active integrations serve 37,100 mutual HCP customers. Top overlap: PartsNow (5,100), ComplianceHub (4,800), LocalBoost Ads (4,200), GreenFlag Insurance (3,800), and FleetPulse GPS (3,400).',
   },
   {
     keywords: ['trend', 'growth', 'volume', 'over time', 'quarter'],
     response:
-      'Partner request volume shows a clear upward trend from mid-2024 through late 2025. Q4 2025 had the highest intake with 8 new partners entering the pipeline. AI & Automation and Scheduling tools are the fastest-growing categories.',
+      'Partner request volume spans 2021–2025. The program saw steady inbound from 2023 onward, with Q4 2025 showing the highest intake. HCP maintains a highly selective acceptance rate — only 12 of 35 requests have resulted in live integrations.',
   },
   {
-    keywords: ['integration', 'type', 'api', 'webhook', 'oauth'],
+    keywords: ['type', 'api', 'webhook', 'oauth'],
     response:
-      'Integration types across the ecosystem: API (8), Webhook (5), OAuth (4), Embedded (4), Data Sync (4), and White Label (3). API remains the most common integration pattern.',
+      'Integration types: API (11), Webhook (6), OAuth (4), Embedded (5), Data Sync (5), White Label (4). API is the dominant pattern, reflecting HCP\'s API-first integration strategy.',
   },
   {
     keywords: ['recent', 'newest', 'latest'],
     response:
-      'The most recent partners added are SmartQuote Builder (Dec 22, 2025), HomeRank SEO (Dec 15, 2025), and PipeBot Analytics (Dec 10, 2025) — all currently in the Evaluating stage.',
-  },
-  {
-    keywords: ['customer', 'customers', 'base', 'size', 'largest'],
-    response:
-      'By customer base, the largest partners are BookLocal Ads (22,500), ServiceWire CRM (18,000), ProNotify (15,300), and FieldChat (13,600) — all either Active or Onboarding. Active partners serve a combined 63,000+ customers.',
+      'Most recent requests: EcoReport (Dec 22, 2025), SkillBadge (Dec 18, 2025), and FundIt Capital (Dec 15, 2025) — all Open classification, currently in Evaluation.',
   },
   {
     keywords: ['help', 'what can', 'commands'],
     response:
-      'I can answer questions about the partner ecosystem! Try asking about:\n- Partner counts and totals\n- Category breakdowns (AI, Communication, Marketing, Scheduling, Other)\n- Pipeline stages (evaluating, onboarding, active, declined)\n- Integration types\n- Trends and growth\n- Customer base sizes\n- Recent partners',
+      'I can answer questions about HCP\'s partner ecosystem. Try asking about:\n- Partner counts and totals\n- Classification breakdown (Core Conflict / Controlled / Open)\n- Pipeline stages (evaluating, onboarding, active, declined)\n- Product Partnerships vs Ecosystem Partnerships\n- Integration types\n- Mutual customer overlap\n- Trends and volume',
   },
 ];
 
 const fallback =
-  "I'm not sure about that. Try asking about partner counts, categories, pipeline stages, integration types, customer bases, or recent activity in the ecosystem.";
+  "I'm not sure about that. Try asking about partner counts, classifications (Core Conflict, Controlled, Open), pipeline stages, Product Partnerships, integration types, or mutual customer overlap.";
 
 export function matchChatResponse(input: string): string {
   const lower = input.toLowerCase();

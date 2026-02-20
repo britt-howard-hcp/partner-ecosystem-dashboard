@@ -1,11 +1,11 @@
 import { usePartners } from '../../hooks/usePartners';
 import { PipelineColumn } from './PipelineColumn';
-import type { PipelineStage } from '../../types/partner';
+import type { Status } from '../../types/partner';
 
-const stages: PipelineStage[] = ['Evaluating', 'Onboarding', 'Active', 'Declined'];
+const statuses: Status[] = ['Evaluating', 'Onboarding', 'Active', 'Declined'];
 
 export function PipelineBoard() {
-  const { partnersByStage } = usePartners();
+  const { partnersByStatus } = usePartners();
 
   return (
     <section className="px-6 py-4">
@@ -13,8 +13,8 @@ export function PipelineBoard() {
         Pipeline
       </h2>
       <div className="flex gap-4">
-        {stages.map((stage) => (
-          <PipelineColumn key={stage} stage={stage} partners={partnersByStage[stage]} />
+        {statuses.map((status) => (
+          <PipelineColumn key={status} status={status} partners={partnersByStatus[status]} />
         ))}
       </div>
     </section>

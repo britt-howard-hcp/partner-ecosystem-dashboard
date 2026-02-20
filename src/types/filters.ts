@@ -1,9 +1,9 @@
-import type { PartnerCategory, IntegrationType } from './partner';
+import type { Classification, IntegrationType } from './partner';
 
 export interface FilterState {
   dateStart: string;
   dateEnd: string;
-  category: PartnerCategory | 'All';
+  classification: Classification | 'All';
   integrationType: IntegrationType | 'All';
   searchQuery: string;
 }

@@ -1,7 +1,7 @@
-import type { Partner, PipelineStage } from '../../types/partner';
+import type { Partner, Status } from '../../types/partner';
 import { PartnerCard } from './PartnerCard';
 
-const headerColors: Record<PipelineStage, string> = {
+const headerColors: Record<Status, string> = {
   Evaluating: 'bg-stage-evaluating',
   Onboarding: 'bg-stage-onboarding',
   Active: 'bg-stage-active',
@@ -9,16 +9,16 @@ const headerColors: Record<PipelineStage, string> = {
 };
 
 interface Props {
-  stage: PipelineStage;
+  status: Status;
   partners: Partner[];
 }
 
-export function PipelineColumn({ stage, partners }: Props) {
+export function PipelineColumn({ status, partners }: Props) {
   return (
     <div className="flex-1 min-w-[220px] flex flex-col">
       <div className="flex items-center gap-2 mb-3">
-        <span className={`w-2.5 h-2.5 rounded-full ${headerColors[stage]}`} />
-        <h3 className="text-sm font-semibold text-text-primary">{stage}</h3>
+        <span className={`w-2.5 h-2.5 rounded-full ${headerColors[status]}`} />
+        <h3 className="text-sm font-semibold text-text-primary">{status}</h3>
         <span className="text-xs text-text-muted ml-auto">{partners.length}</span>
       </div>
       <div className="flex flex-col gap-2 overflow-y-auto max-h-[340px] pr-1">

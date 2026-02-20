@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useDashboard } from '../context/DashboardContext';
-import type { Partner, PartnerCategory } from '../types/partner';
+import type { Partner, Classification } from '../types/partner';
 import type { DetailPanelView } from '../types/detail-panel';
 
 export function useDetailPanel() {
@@ -13,9 +13,9 @@ export function useDetailPanel() {
     [dispatch],
   );
 
-  const openCategory = useCallback(
-    (category: PartnerCategory, partners: Partner[]) => {
-      dispatch({ type: 'OPEN_DETAIL_PANEL', view: { kind: 'category', category, partners } });
+  const openClassification = useCallback(
+    (classification: Classification, partners: Partner[]) => {
+      dispatch({ type: 'OPEN_DETAIL_PANEL', view: { kind: 'classification', classification, partners } });
     },
     [dispatch],
   );
@@ -28,7 +28,7 @@ export function useDetailPanel() {
     view: state.detailPanel as DetailPanelView,
     isOpen: state.detailPanel !== null,
     openPartner,
-    openCategory,
+    openClassification,
     close,
   };
 }

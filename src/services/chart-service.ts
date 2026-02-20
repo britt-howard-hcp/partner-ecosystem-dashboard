@@ -1,32 +1,34 @@
-import type { Partner, PartnerCategory } from '../types/partner';
+import type { Partner, Classification } from '../types/partner';
 
 export interface VolumeDataPoint {
   month: string; // "Jun 2024"
   count: number;
 }
 
-export interface CategoryDataPoint {
-  name: PartnerCategory;
+export interface ClassificationDataPoint {
+  name: Classification;
   value: number;
   color: string;
 }
 
-export interface CategoryVolumeDataPoint {
-  category: PartnerCategory;
+export interface ClassificationVolumeDataPoint {
+  classification: Classification;
   count: number;
   color: string;
 }
 
-const categoryColorMap: Record<PartnerCategory, string> = {
-  'AI & Automation Tools': '#8b5cf6',
-  'Customer Communication Tools': '#06b6d4',
-  'Marketing Platforms': '#f59e0b',
-  'Scheduling & Dispatch Tools': '#10b981',
-  'Other Trade-Specific Platforms': '#ec4899',
+const classificationColorMap: Record<Classification, string> = {
+  'Core Conflict': '#ef4444',
+  'Controlled': '#f59e0b',
+  'Open': '#10b981',
 };
 
-export function getCategoryColor(category: PartnerCategory): string {
-  return categoryColorMap[category];
+export function getClassificationColor(classification: Classification): string {
+  return classificationColorMap[classification];
+}
+
+export function getClassificationColorMap(): Record<Classification, string> {
+  return classificationColorMap;
 }
 
 export function buildVolumeData(partners: Partner[]): VolumeDataPoint[] {
@@ -38,7 +40,6 @@ export function buildVolumeData(partners: Partner[]): VolumeDataPoint[] {
     buckets.set(key, (buckets.get(key) ?? 0) + 1);
   }
 
-  // Build a continuous month range from earliest to latest
   const dates = partners.map((p) => new Date(p.requestDate)).sort((a, b) => a.getTime() - b.getTime());
   if (dates.length === 0) return [];
 
@@ -55,28 +56,28 @@ export function buildVolumeData(partners: Partner[]): VolumeDataPoint[] {
   return result;
 }
 
-export function buildCategoryData(partners: Partner[]): CategoryDataPoint[] {
-  const counts = new Map<PartnerCategory, number>();
+export function buildClassificationData(partners: Partner[]): ClassificationDataPoint[] {
+  const counts = new Map<Classification, number>();
   for (const p of partners) {
-    counts.set(p.category, (counts.get(p.category) ?? 0) + 1);
+    counts.set(p.classification, (counts.get(p.classification) ?? 0) + 1);
   }
-  return (Object.keys(categoryColorMap) as PartnerCategory[]).map((cat) => ({
-    name: cat,
-    value: counts.get(cat) ?? 0,
-    color: categoryColorMap[cat],
+  return (Object.keys(classificationColorMap) as Classification[]).map((cls) => ({
+    name: cls,
+    value: counts.get(cls) ?? 0,
+    color: classificationColorMap[cls],
   }));
 }
 
-export function buildCategoryVolumeData(partners: Partner[]): CategoryVolumeDataPoint[] {
-  const counts = new Map<PartnerCategory, number>();
+export function buildClassificationVolumeData(partners: Partner[]): ClassificationVolumeDataPoint[] {
+  const counts = new Map<Classification, number>();
   for (const p of partners) {
-    counts.set(p.category, (counts.get(p.category) ?? 0) + 1);
+    counts.set(p.classification, (counts.get(p.classification) ?? 0) + 1);
   }
-  return (Object.keys(categoryColorMap) as PartnerCategory[])
-    .map((cat) => ({
-      category: cat,
-      count: counts.get(cat) ?? 0,
-      color: categoryColorMap[cat],
+  return (Object.keys(classificationColorMap) as Classification[])
+    .map((cls) => ({
+      classification: cls,
+      count: counts.get(cls) ?? 0,
+      color: classificationColorMap[cls],
     }))
     .sort((a, b) => b.count - a.count);
 }

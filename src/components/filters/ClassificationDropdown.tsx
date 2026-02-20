@@ -1,24 +1,22 @@
 import { useFilters } from '../../hooks/useFilters';
-import type { PartnerCategory } from '../../types/partner';
+import type { Classification } from '../../types/partner';
 
-const options: Array<PartnerCategory | 'All'> = [
+const options: Array<Classification | 'All'> = [
   'All',
-  'AI & Automation Tools',
-  'Customer Communication Tools',
-  'Marketing Platforms',
-  'Scheduling & Dispatch Tools',
-  'Other Trade-Specific Platforms',
+  'Core Conflict',
+  'Controlled',
+  'Open',
 ];
 
-export function CategoryDropdown() {
+export function ClassificationDropdown() {
   const { filters, setFilters } = useFilters();
 
   return (
     <div className="flex items-center gap-2">
-      <label className="text-xs text-text-muted">Category</label>
+      <label className="text-xs text-text-muted">Classification</label>
       <select
-        value={filters.category}
-        onChange={(e) => setFilters({ category: e.target.value as PartnerCategory | 'All' })}
+        value={filters.classification}
+        onChange={(e) => setFilters({ classification: e.target.value as Classification | 'All' })}
         className="bg-surface-700 border border-border rounded px-2 py-1.5 text-sm text-text-primary focus:outline-none focus:border-accent-500"
       >
         {options.map((opt) => (

@@ -1,21 +1,26 @@
-export type PipelineStage = 'Evaluating' | 'Onboarding' | 'Active' | 'Declined';
+export type Status = 'Evaluating' | 'Onboarding' | 'Active' | 'Declined';
 
-export type PartnerCategory =
-  | 'AI & Automation Tools'
-  | 'Customer Communication Tools'
-  | 'Marketing Platforms'
-  | 'Scheduling & Dispatch Tools'
-  | 'Other Trade-Specific Platforms';
+export type Classification = 'Core Conflict' | 'Controlled' | 'Open';
+
+export type PartnershipType = 'Product Partnership' | 'Ecosystem Partnership';
 
 export type IntegrationType = 'API' | 'Webhook' | 'OAuth' | 'Embedded' | 'Data Sync' | 'White Label';
 
 export interface Partner {
   id: string;
   name: string;
-  stage: PipelineStage;
-  category: PartnerCategory;
+  website: string;
+  description: string;
+  classification: Classification;
+  partnershipType: PartnershipType;
+  status: Status;
   integrationType: IntegrationType;
   requestDate: string; // ISO date
-  description: string;
   customerCount: number;
+  integrationRequest: string;
+  whyIntegrate: string;
+  mutualCustomers?: number;
+  contactName?: string;
+  contactEmail?: string;
+  notes?: string;
 }

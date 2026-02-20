@@ -37,7 +37,7 @@ export function SearchBar() {
             setOpen(true);
           }}
           onFocus={() => setOpen(true)}
-          placeholder="Partner name..."
+          placeholder="Company name..."
           className="bg-surface-700 border border-border rounded px-2 py-1.5 text-sm text-text-primary placeholder:text-text-muted focus:outline-none focus:border-accent-500 w-48"
         />
       </div>
@@ -47,10 +47,17 @@ export function SearchBar() {
             <button
               key={p.id}
               onClick={() => handleSelect(p)}
-              className="w-full text-left px-3 py-2 hover:bg-surface-700 transition-colors"
+              className={`w-full text-left px-3 py-2 hover:bg-surface-700 transition-colors ${
+                p.partnershipType === 'Product Partnership' ? 'border-l-2 border-partnership-product' : ''
+              }`}
             >
-              <p className="text-sm text-text-primary truncate">{p.name}</p>
-              <p className="text-xs text-text-muted">{p.category} &middot; {p.stage}</p>
+              <div className="flex items-center gap-2">
+                <p className="text-sm text-text-primary truncate">{p.name}</p>
+                {p.partnershipType === 'Product Partnership' && (
+                  <span className="text-[10px] font-medium text-partnership-product">Product</span>
+                )}
+              </div>
+              <p className="text-xs text-text-muted">{p.classification} &middot; {p.status}</p>
             </button>
           ))}
         </div>

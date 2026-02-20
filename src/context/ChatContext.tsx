@@ -17,7 +17,7 @@ export function ChatProvider({ children }: { children: ReactNode }) {
     {
       id: 'welcome',
       role: 'assistant',
-      content: 'Welcome to Ask the Ecosystem! Try questions about partner counts, categories (AI, Communication, Marketing, Scheduling), pipeline stages, trends, or customer bases.',
+      content: 'Welcome to Ask the Ecosystem! I can answer questions about HCP\'s partner pipeline — classifications (Core Conflict, Controlled, Open), Product Partnerships, mutual customers, integration types, and trends.',
       timestamp: new Date(),
     },
   ]);

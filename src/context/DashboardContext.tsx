@@ -21,7 +21,7 @@ type Action =
 const defaultFilters: FilterState = {
   dateStart: '',
   dateEnd: '',
-  category: 'All',
+  classification: 'All',
   integrationType: 'All',
   searchQuery: '',
 };
@@ -30,7 +30,7 @@ function applyFilters(partners: Partner[], filters: FilterState): Partner[] {
   return partners.filter((p) => {
     if (filters.dateStart && p.requestDate < filters.dateStart) return false;
     if (filters.dateEnd && p.requestDate > filters.dateEnd) return false;
-    if (filters.category !== 'All' && p.category !== filters.category) return false;
+    if (filters.classification !== 'All' && p.classification !== filters.classification) return false;
     if (filters.integrationType !== 'All' && p.integrationType !== filters.integrationType) return false;
     if (filters.searchQuery) {
       const q = filters.searchQuery.toLowerCase();

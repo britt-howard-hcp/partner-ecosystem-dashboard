@@ -2,24 +2,24 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 
 import { useChartData } from '../../hooks/useChartData';
 import { useDetailPanel } from '../../hooks/useDetailPanel';
 import { useDashboard } from '../../context/DashboardContext';
-import type { PartnerCategory } from '../../types/partner';
+import type { Classification } from '../../types/partner';
 
 export function CategoryBarChart() {
-  const { categoryVolumeData } = useChartData();
-  const { openCategory } = useDetailPanel();
+  const { classificationVolumeData } = useChartData();
+  const { openClassification } = useDetailPanel();
   const { state } = useDashboard();
 
-  function handleClick(category: PartnerCategory) {
-    const partners = state.filteredPartners.filter((p) => p.category === category);
-    openCategory(category, partners);
+  function handleClick(classification: Classification) {
+    const partners = state.filteredPartners.filter((p) => p.classification === classification);
+    openClassification(classification, partners);
   }
 
-  const hasData = categoryVolumeData.some((d) => d.count > 0);
+  const hasData = classificationVolumeData.some((d) => d.count > 0);
 
   return (
     <div>
       <h3 className="text-sm font-semibold text-text-secondary uppercase tracking-wider mb-3">
-        By Category
+        By Classification
       </h3>
       <div className="bg-surface-800 rounded-lg p-4 border border-border h-[320px]">
         {!hasData ? (
@@ -28,7 +28,7 @@ export function CategoryBarChart() {
           </p>
         ) : (
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={categoryVolumeData} layout="vertical" margin={{ left: 20, right: 20 }}>
+            <BarChart data={classificationVolumeData} layout="vertical" margin={{ left: 20, right: 20 }}>
               <XAxis
                 type="number"
                 allowDecimals={false}
@@ -38,8 +38,8 @@ export function CategoryBarChart() {
               />
               <YAxis
                 type="category"
-                dataKey="category"
-                width={160}
+                dataKey="classification"
+                width={110}
                 tick={{ fill: '#94a3b8', fontSize: 11 }}
                 axisLine={{ stroke: '#2e3348' }}
                 tickLine={false}
@@ -58,10 +58,10 @@ export function CategoryBarChart() {
                 name="Partners"
                 radius={[0, 4, 4, 0]}
                 className="cursor-pointer"
-                onClick={(_data, index) => handleClick(categoryVolumeData[index].category)}
+                onClick={(_data, index) => handleClick(classificationVolumeData[index].classification)}
               >
-                {categoryVolumeData.map((entry) => (
-                  <Cell key={entry.category} fill={entry.color} />
+                {classificationVolumeData.map((entry) => (
+                  <Cell key={entry.classification} fill={entry.color} />
                 ))}
               </Bar>
             </BarChart>

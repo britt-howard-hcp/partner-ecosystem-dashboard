@@ -2,24 +2,24 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recha
 import { useChartData } from '../../hooks/useChartData';
 import { useDetailPanel } from '../../hooks/useDetailPanel';
 import { useDashboard } from '../../context/DashboardContext';
-import type { PartnerCategory } from '../../types/partner';
+import type { Classification } from '../../types/partner';
 
 export function CategoryBreakdown() {
-  const { categoryData } = useChartData();
-  const { openCategory } = useDetailPanel();
+  const { classificationData } = useChartData();
+  const { openClassification } = useDetailPanel();
   const { state } = useDashboard();
 
-  const hasData = categoryData.some((d) => d.value > 0);
+  const hasData = classificationData.some((d) => d.value > 0);
 
-  function handleClick(category: PartnerCategory) {
-    const partners = state.filteredPartners.filter((p) => p.category === category);
-    openCategory(category, partners);
+  function handleClick(classification: Classification) {
+    const partners = state.filteredPartners.filter((p) => p.classification === classification);
+    openClassification(classification, partners);
   }
 
   return (
     <div>
       <h3 className="text-sm font-semibold text-text-secondary uppercase tracking-wider mb-3">
-        Categories
+        Classifications
       </h3>
       <div className="bg-surface-800 rounded-lg p-4 border border-border h-[320px]">
         {!hasData ? (
@@ -30,7 +30,7 @@ export function CategoryBreakdown() {
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie
-                data={categoryData}
+                data={classificationData}
                 cx="50%"
                 cy="50%"
                 innerRadius={55}
@@ -39,9 +39,9 @@ export function CategoryBreakdown() {
                 nameKey="name"
                 strokeWidth={0}
                 className="cursor-pointer"
-                onClick={(_, index) => handleClick(categoryData[index].name)}
+                onClick={(_, index) => handleClick(classificationData[index].name)}
               >
-                {categoryData.map((entry) => (
+                {classificationData.map((entry) => (
                   <Cell key={entry.name} fill={entry.color} />
                 ))}
               </Pie>
