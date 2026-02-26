@@ -9,16 +9,16 @@ export type IntegrationType = 'API' | 'Webhook' | 'OAuth' | 'Embedded' | 'Data S
 export interface Partner {
   id: string;
   name: string;
-  website: string;
-  description: string;
+  website?: string;
+  description?: string;
   classification: Classification;
   partnershipType: PartnershipType;
   status: Status;
   integrationType: IntegrationType;
-  requestDate: string; // ISO date
-  customerCount: number;
-  integrationRequest: string;
-  whyIntegrate: string;
+  requestDate?: string;
+  customerCount?: number;
+  integrationRequest?: string;
+  whyIntegrate?: string;
   mutualCustomers?: number;
   contactName?: string;
   contactEmail?: string;

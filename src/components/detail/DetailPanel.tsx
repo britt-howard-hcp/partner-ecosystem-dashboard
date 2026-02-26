@@ -61,9 +61,9 @@ function PartnerProfile({ partner }: { partner: Partner }) {
               <span className="text-sm text-accent-400 truncate block">{partner.website.replace(/^https?:\/\//, '')}</span>
             </Field>
           )}
-          {partner.customerCount > 0 && (
+          {(partner.customerCount ?? 0) > 0 && (
             <Field label="Customer Base">
-              <span className="text-sm text-text-primary">{partner.customerCount.toLocaleString()}</span>
+              <span className="text-sm text-text-primary">{partner.customerCount!.toLocaleString()}</span>
             </Field>
           )}
         </div>
@@ -187,12 +187,12 @@ function ClassificationList({ classification, partners }: { classification: Clas
                   <span className="text-[10px] font-medium text-partnership-product">Product</span>
                 )}
               </div>
-              <p className="text-xs text-text-muted mt-1">{p.description}</p>
+              {p.description && <p className="text-xs text-text-muted mt-1">{p.description}</p>}
               <div className="flex items-center gap-3 mt-2">
                 <Badge label={p.status} variant="status" />
                 <span className="text-xs text-text-muted">{p.integrationType}</span>
-                {p.customerCount > 0 && (
-                  <span className="text-xs text-text-muted ml-auto">{p.customerCount.toLocaleString()} customers</span>
+                {(p.customerCount ?? 0) > 0 && (
+                  <span className="text-xs text-text-muted ml-auto">{p.customerCount!.toLocaleString()} customers</span>
                 )}
               </div>
             </div>
