@@ -8,17 +8,17 @@ export function EnrichedBadge({ field, enrichedFields }: EnrichedBadgeProps) {
 
   return (
     <span
-      className="inline-flex items-center ml-1 text-accent-400/60"
-      title="Enriched from classification overrides — not yet in Airtable"
+      className="inline-flex items-center ml-1 text-accent-400/70 cursor-help"
+      title="AI-estimated based on company profile"
     >
       <svg
-        width="12"
-        height="12"
-        viewBox="0 0 16 16"
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
         fill="currentColor"
         aria-hidden="true"
       >
-        <path d="M8 0l2 5.5L16 6l-4.5 3.5L13 16l-5-3.5L3 16l1.5-6.5L0 6l6-.5z" />
+        <path d="M12 0L13.5 8.5L20 5L15.5 10.5L24 12L15.5 13.5L20 19L13.5 15.5L12 24L10.5 15.5L4 19L8.5 13.5L0 12L8.5 10.5L4 5L10.5 8.5Z" />
       </svg>
     </span>
   );

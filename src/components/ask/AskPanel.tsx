@@ -16,8 +16,8 @@ export function AskPanel({ onClose }: AskPanelProps) {
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-border">
           <div className="flex items-center gap-2">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-accent-400">
-              <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26z" />
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" className="text-accent-400">
+              <path d="M12 0L13.5 8.5L20 5L15.5 10.5L24 12L15.5 13.5L20 19L13.5 15.5L12 24L10.5 15.5L4 19L8.5 13.5L0 12L8.5 10.5L4 5L10.5 8.5Z" />
             </svg>
             <h2 className="text-base font-semibold text-text-primary">Ask the Ecosystem</h2>
           </div>
@@ -33,8 +33,8 @@ export function AskPanel({ onClose }: AskPanelProps) {
         {/* Placeholder Body */}
         <div className="flex-1 flex flex-col items-center justify-center px-8 text-center">
           <div className="w-16 h-16 rounded-full bg-accent-500/10 flex items-center justify-center mb-5">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-accent-400">
-              <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26z" />
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" className="text-accent-400">
+              <path d="M12 0L13.5 8.5L20 5L15.5 10.5L24 12L15.5 13.5L20 19L13.5 15.5L12 24L10.5 15.5L4 19L8.5 13.5L0 12L8.5 10.5L4 5L10.5 8.5Z" />
             </svg>
           </div>
           <h3 className="text-lg font-semibold text-text-primary mb-2">

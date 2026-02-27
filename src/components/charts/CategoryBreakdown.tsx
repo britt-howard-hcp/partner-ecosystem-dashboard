@@ -32,9 +32,9 @@ export function CategoryBreakdown() {
               <Pie
                 data={classificationData}
                 cx="50%"
-                cy="50%"
-                innerRadius={55}
-                outerRadius={85}
+                cy="45%"
+                innerRadius={40}
+                outerRadius={65}
                 dataKey="value"
                 nameKey="name"
                 strokeWidth={0}

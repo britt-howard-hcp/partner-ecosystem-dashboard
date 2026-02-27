@@ -1,13 +1,28 @@
+import { useMemo } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 import { useChartData } from '../../hooks/useChartData';
 import { useDetailPanel } from '../../hooks/useDetailPanel';
 import { useDashboard } from '../../context/DashboardContext';
 
+const SHORT_LABELS: Record<string, string> = {
+  'Not Moving Forward': 'Not Moving Fwd',
+  'Deactivated Partner': 'Deactivated',
+  'Signed Agreements': 'Signed Agrmts',
+  'Hidden Partner': 'Hidden',
+};
+
 export function StatusDistribution() {
   const { statusDistributionData } = useChartData();
   const { openList } = useDetailPanel();
   const { state } = useDashboard();
-  const hasData = statusDistributionData.some((d) => d.count > 0);
+
+  // Only show stages that have data — saves vertical space
+  const visibleData = useMemo(
+    () => statusDistributionData.filter((d) => d.count > 0),
+    [statusDistributionData],
+  );
+
+  const hasData = visibleData.length > 0;
 
   function handleClick(stage: string) {
     const partners = state.filteredPartners.filter((p) => p.airtableStatus === stage);
@@ -26,7 +41,7 @@ export function StatusDistribution() {
           </p>
         ) : (
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={statusDistributionData} layout="vertical" margin={{ left: 10, right: 20 }}>
+            <BarChart data={visibleData} layout="vertical" margin={{ left: 10, right: 20 }}>
               <XAxis
                 type="number"
                 allowDecimals={false}
@@ -37,10 +52,11 @@ export function StatusDistribution() {
               <YAxis
                 type="category"
                 dataKey="stage"
-                width={130}
-                tick={{ fill: '#cbd5e1', fontSize: 11 }}
+                width={110}
+                tick={{ fill: '#cbd5e1', fontSize: 10 }}
                 axisLine={{ stroke: '#2e3348' }}
                 tickLine={false}
+                tickFormatter={(stage: string) => SHORT_LABELS[stage] ?? stage}
               />
               <Tooltip
                 cursor={{ fill: 'transparent' }}
@@ -54,15 +70,16 @@ export function StatusDistribution() {
                 itemStyle={{ color: '#f1f5f9' }}
                 labelStyle={{ color: '#cbd5e1' }}
                 formatter={(value) => [value, 'Companies']}
+                labelFormatter={(label) => label}
               />
               <Bar
                 dataKey="count"
                 name="Companies"
                 radius={[0, 4, 4, 0]}
                 className="cursor-pointer"
-                onClick={(_data, index) => handleClick(statusDistributionData[index].stage)}
+                onClick={(_data, index) => handleClick(visibleData[index].stage)}
               >
-                {statusDistributionData.map((entry) => (
+                {visibleData.map((entry) => (
                   <Cell key={entry.stage} fill={entry.color} />
                 ))}
               </Bar>
