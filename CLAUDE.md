@@ -111,7 +111,7 @@ Remove from layout entirely. Dashboard goes full-width. Chat components stay in 
 ### Partner interface (`src/types/partner.ts`)
 
 Add these fields:
-- `category?: string` — from Airtable Category field, with override fallback
+- `category: string[]` — from Airtable Category multi-select field (array of tags), with override fallback. Never a single string.
 - `airtableStatus: string` — raw Airtable stage name (e.g., "Initial Call", "Live", "Not Moving Forward")
 - `enrichedFields: Set<string>` (or `string[]`) — names of fields that came from classification-overrides rather than Airtable. Used by components to render the AI enrichment badge.
 
@@ -147,7 +147,25 @@ Create a reusable `<EnrichedBadge />` component.
 
 ## Airtable Category Taxonomy
 
-These are the exact values in the Airtable Category field. Display as-is:
+### CRITICAL: Categories are MULTI-SELECT TAGS, not single values
+
+The Airtable Category field is a **multi-select field**. Each company can have 1-3 category tags. The Airtable API returns these as an **array** (e.g., `["AI", "CSR AI", "Business Ops & Growth"]`).
+
+This means:
+- The `category` field on the Partner interface must be `string[]` (array), not `string`
+- Chart counts must count each tag independently — a company tagged ["AI", "CSR AI"] counts as 1 toward AI and 1 toward CSR AI, NOT as 1 toward "AI, CSR AI"
+- Filtering by category "AI" must return ALL companies that have "AI" as ANY of their tags
+- The category chart should never show combined tag strings like "AI, CSR AI" as a category — break them apart
+
+### Two meta-categories (important context)
+
+Britt applies two broad bucket tags across most companies:
+- **Business Ops & Growth** — companies that help pros run/grow their business (marketing, reviews, financing, payroll, etc.)
+- **Trade Tools** — companies specific to the trades (HVAC diagnostics, fleet management, pricebooks, etc.)
+
+Most companies get one of these PLUS their specific category (e.g., ["CSR AI", "Business Ops & Growth"]). This is by design — it allows slicing the data both by specific function and by broad strategic bucket.
+
+### All known category tag values
 
 Aggregator, Booking, Call/VOIP, CRM, Finance, Marketing, Productivity, Reviews, Automation, Websites, Checklists/Forms, Time Tracking, Calendar, Postcards, Email, Payroll, Funding, Financing, Payments, Gift Cards, Accounting, Fintech, Service, GPS, Intake, Services, Agency, Pricebook, Visual/AR, Chat, Communication, Lead Gen, Inventory Management, Job Inbox, Insurance, Insurance Exchange, Answering Service, Licensing/verification, Background Checks, Franchise, Route Optimization, Reporting, AI, CSR AI, Fleet Management, Trade Tools, Lead Catcher, Distributor, Purchasing, Last Mile Delivery, Performance Pay, Business Ops & Growth, Smart Thermostat
 
@@ -155,7 +173,7 @@ Aggregator, Booking, Call/VOIP, CRM, Finance, Marketing, Productivity, Reviews, 
 - Normalize "insurane" → "Insurance" (typo in Airtable)
 - Normalize "Not Moving forward" → "Not Moving Forward" (case consistency on status)
 - Keep "Service" / "Services" as-is for now (known near-duplicate, Britt will consolidate later)
-- Display empty category as "Uncategorized"
+- Display empty category array as ["Uncategorized"]
 
 ---
 
@@ -214,14 +232,41 @@ Unexplored → Initial Call → Discovery → Pilot → Signed Agreements → Li
 - Status distribution chart: stage labels and company counts have inconsistent contrast (some white, some dark)
 - Classification pie chart and status distribution chart don't have matching interaction patterns — both should: hover shows readable tooltip, click opens detail panel with filtered company list
 
-### Phase 1B — Category Intelligence + Interactivity Fixes ← CURRENT
-- Fix all Phase 1A known issues listed above (KPI clickability, chart tooltips, chart click behavior)
-- Add category chart (treemap or grouped bar) replacing the volume area chart — this is the PRIMARY chart, most prominent position
-- Rebalance chart visual hierarchy: Category distribution gets the most visual weight, classification pie chart becomes smaller/secondary, status distribution stays as-is
-- Category chart must be clickable — clicking a category opens detail panel with list of companies in that category
-- Add category and real-status filter dropdowns to filter bar
-- Update narrative block to reference categories and market signal story
-- Make KPI cards clickable — clicking pre-filters the entire dashboard to that segment (e.g., clicking "Controlled Requests" filters to classification=Controlled, clicking "Categories Represented" could show all categories, clicking "In Pipeline" filters to pipeline statuses only)
+### Phase 1B — Category Intelligence + Interactivity Fixes ✅ COMPLETE (with known issues from testing)
+
+Phase 1B delivered: clickable KPIs, category chart, status/category filters, fixed tooltips, chart click-to-drill.
+
+**Known issues from 1B testing that need fixing:**
+
+KPI Bar:
+- Reorder KPI cards: Ecosystem Requests → Live Integrations → In Pipeline → Controlled Requests → "Categories Represented" (move to far right)
+- "Categories Represented" label is confusing — the other 4 cards are filters that narrow the data, this one opens a list. Consider relabeling to "Browse All Categories" or "Category Directory" or similar — something that signals "click here to explore" rather than being a filter
+- When clicking into a list view from any KPI card or chart segment, clicking a company name in that list should open the company's full detail panel (drill-down from list → profile)
+
+Category Data Model (CRITICAL FIX):
+- Category is a MULTI-SELECT field in Airtable — comes back as an array, not a string
+- The `category` field on Partner must be `string[]`
+- Category chart must count each tag independently (company tagged ["AI", "CSR AI"] = 1 count for AI + 1 count for CSR AI)
+- Category filter must match any tag (filtering "AI" returns all companies with "AI" in their tags array)
+- Category chart should NEVER show combined strings like "AI, CSR AI" as a bar — each tag gets its own bar
+- See "Airtable Category Taxonomy" section for full details on the multi-select model
+
+Market Pulse Layout:
+- Category distribution chart and the two right-side charts (pipeline stages, classifications) have uneven sizing — there's an awkward gap under classifications
+- The two right-side charts should be equal height and stack cleanly — no whitespace gap between them
+- Category distribution (left) should be the same total height as both right-side charts stacked together
+
+Filter/Search Consolidation:
+- Search bar and all filter dropdowns (date, classification, integration type, status, category) should live on ONE row at the top of the dashboard, above Market Pulse
+- The "Ecosystem Directory" heading should sit above the partner table with the search/filters integrated there or in the global filter bar — not as a separate section with its own search
+
+### Phase 1B-fix — Current Issues ← CURRENT
+- Fix category data model (multi-select array handling)
+- Fix KPI bar order and labeling
+- Fix Market Pulse chart layout/sizing
+- Consolidate filters into one row
+- Add drill-down from list views to company detail panels
+- See prompt for full details
 
 ### Phase 1C — View Toggle + Polish
 - Add Table/Board view toggle
