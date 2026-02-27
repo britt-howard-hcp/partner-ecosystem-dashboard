@@ -21,7 +21,9 @@ The dashboard was built in four commits:
 
 The Airtable connection is live. Real partner data flows through. Legacy partners (Yelp, Angi, Google, Thumbtack, Bluon, etc.) have been backfilled into Airtable as Live.
 
-**What needs to happen now:** A layout redesign based on a design review conducted with Britt. The dashboard needs to shift from a pipeline-first layout to a market intelligence-first layout. See the full design review at `docs/dashboard-design-review.md`.
+**Phase 1A is complete.** The layout has been restructured from pipeline-first to market intelligence-first: sidebar/chat removed, full-width layout, partner table as primary view, status distribution chart replacing the redundant classification bar chart, KPI cards updated, data model extended with `category`, `airtableStatus`, and `enrichedFields`.
+
+**What needs to happen now:** Phase 1A cleanup (bugs from initial implementation) + Phase 1B (category intelligence and interactivity). See the full design review at `docs/dashboard-design-review.md`.
 
 ---
 
@@ -195,20 +197,31 @@ Unexplored → Initial Call → Discovery → Pilot → Signed Agreements → Li
 
 ## Implementation Phases
 
-### Phase 1A — Layout Restructure + Data Layer
-- Remove sidebar/chat, go full-width
-- Pull Category field from Airtable API into Partner data model
-- Add `airtableStatus` and `enrichedFields` to Partner interface
-- Add category fallback to classification-overrides
-- Build `PartnerTable.tsx` as primary view with sortable columns
-- Replace redundant classification bar chart with status distribution chart
-- Update KPI cards to new metrics
+### Phase 1A — Layout Restructure + Data Layer ✅ COMPLETE (with known issues)
+- ✅ Remove sidebar/chat, go full-width
+- ✅ Pull Category field from Airtable API into Partner data model
+- ✅ Add `airtableStatus` and `enrichedFields` to Partner interface
+- ✅ Add category fallback to classification-overrides
+- ✅ Build `PartnerTable.tsx` as primary view with sortable columns
+- ✅ Replace redundant classification bar chart with status distribution chart
+- ✅ Update KPI cards to new metrics
 
-### Phase 1B — Category Intelligence + Filters
-- Add category chart (treemap or grouped bar) replacing the volume area chart
+**Known issues from 1A that need fixing:**
+- KPI cards are NOT clickable yet — clicking should pre-filter the dashboard
+- Status distribution chart bars are NOT clickable — clicking a stage should open a detail panel with the list of companies in that stage (same behavior as classification pie chart)
+- Tooltip text on classification pie chart is dark-on-dark and unreadable — needs light text
+- Tooltip text on status distribution chart has the same dark-on-dark readability issue
+- Status distribution chart: stage labels and company counts have inconsistent contrast (some white, some dark)
+- Classification pie chart and status distribution chart don't have matching interaction patterns — both should: hover shows readable tooltip, click opens detail panel with filtered company list
+
+### Phase 1B — Category Intelligence + Interactivity Fixes ← CURRENT
+- Fix all Phase 1A known issues listed above (KPI clickability, chart tooltips, chart click behavior)
+- Add category chart (treemap or grouped bar) replacing the volume area chart — this is the PRIMARY chart, most prominent position
+- Rebalance chart visual hierarchy: Category distribution gets the most visual weight, classification pie chart becomes smaller/secondary, status distribution stays as-is
+- Category chart must be clickable — clicking a category opens detail panel with list of companies in that category
 - Add category and real-status filter dropdowns to filter bar
 - Update narrative block to reference categories and market signal story
-- Make KPI cards clickable (pre-filter dashboard)
+- Make KPI cards clickable — clicking pre-filters the entire dashboard to that segment (e.g., clicking "Controlled Requests" filters to classification=Controlled, clicking "Categories Represented" could show all categories, clicking "In Pipeline" filters to pipeline statuses only)
 
 ### Phase 1C — View Toggle + Polish
 - Add Table/Board view toggle
