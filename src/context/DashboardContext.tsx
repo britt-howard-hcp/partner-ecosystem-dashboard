@@ -4,6 +4,14 @@ import type { FilterState } from '../types/filters';
 import type { DetailPanelView } from '../types/detail-panel';
 import { partnerService } from '../services';
 
+const pipelineStages = new Set([
+  'Unexplored',
+  'Initial Call',
+  'Discovery',
+  'Pilot',
+  'Signed Agreements',
+]);
+
 interface DashboardState {
   allPartners: Partner[];
   filteredPartners: Partner[];
@@ -24,6 +32,8 @@ const defaultFilters: FilterState = {
   classification: 'All',
   integrationType: 'All',
   searchQuery: '',
+  airtableStatus: 'All',
+  category: 'All',
 };
 
 function applyFilters(partners: Partner[], filters: FilterState): Partner[] {
@@ -32,6 +42,14 @@ function applyFilters(partners: Partner[], filters: FilterState): Partner[] {
     if (filters.dateEnd && p.requestDate && p.requestDate > filters.dateEnd) return false;
     if (filters.classification !== 'All' && p.classification !== filters.classification) return false;
     if (filters.integrationType !== 'All' && p.integrationType !== filters.integrationType) return false;
+    if (filters.airtableStatus === '__pipeline__') {
+      if (!pipelineStages.has(p.airtableStatus)) return false;
+    } else if (filters.airtableStatus !== 'All') {
+      if (p.airtableStatus !== filters.airtableStatus) return false;
+    }
+    if (filters.category !== 'All') {
+      if ((p.category ?? 'Uncategorized') !== filters.category) return false;
+    }
     if (filters.searchQuery) {
       const q = filters.searchQuery.toLowerCase();
       if (!p.name.toLowerCase().includes(q)) return false;

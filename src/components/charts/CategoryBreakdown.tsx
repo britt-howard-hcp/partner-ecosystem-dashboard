@@ -53,6 +53,8 @@ export function CategoryBreakdown() {
                   color: '#f1f5f9',
                   fontSize: 12,
                 }}
+                itemStyle={{ color: '#f1f5f9' }}
+                labelStyle={{ color: '#cbd5e1' }}
               />
               <Legend
                 verticalAlign="bottom"

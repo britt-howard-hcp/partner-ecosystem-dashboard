@@ -20,6 +20,13 @@ export function useDetailPanel() {
     [dispatch],
   );
 
+  const openList = useCallback(
+    (title: string, partners: Partner[]) => {
+      dispatch({ type: 'OPEN_DETAIL_PANEL', view: { kind: 'list', title, partners } });
+    },
+    [dispatch],
+  );
+
   const close = useCallback(() => {
     dispatch({ type: 'CLOSE_DETAIL_PANEL' });
   }, [dispatch]);
@@ -29,6 +36,7 @@ export function useDetailPanel() {
     isOpen: state.detailPanel !== null,
     openPartner,
     openClassification,
+    openList,
     close,
   };
 }

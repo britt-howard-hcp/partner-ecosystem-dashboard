@@ -1,6 +1,6 @@
-import { VolumeChart } from './VolumeChart';
-import { CategoryBreakdown } from './CategoryBreakdown';
+import { CategoryDistribution } from './CategoryDistribution';
 import { StatusDistribution } from './StatusDistribution';
+import { CategoryBreakdown } from './CategoryBreakdown';
 
 export function MarketPulse() {
   return (
@@ -9,9 +9,15 @@ export function MarketPulse() {
         Market Pulse
       </h2>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <VolumeChart />
-        <CategoryBreakdown />
-        <StatusDistribution />
+        {/* Primary chart: Category Distribution — spans 2 columns */}
+        <div className="lg:col-span-2">
+          <CategoryDistribution />
+        </div>
+        {/* Right column: Status + Classification stacked */}
+        <div className="flex flex-col gap-4">
+          <StatusDistribution />
+          <CategoryBreakdown />
+        </div>
       </div>
     </section>
   );

@@ -15,7 +15,7 @@ export function DetailPanel() {
       <div className="fixed top-0 right-0 h-full w-[420px] bg-surface-900 border-l border-border z-50 animate-slide-in flex flex-col">
         <div className="flex items-center justify-between px-5 py-4 border-b border-border">
           <h2 className="text-base font-semibold text-text-primary truncate">
-            {view.kind === 'partner' ? view.partner.name : view.classification}
+            {view.kind === 'partner' ? view.partner.name : view.kind === 'classification' ? view.classification : view.title}
           </h2>
           <button
             onClick={close}
@@ -28,8 +28,10 @@ export function DetailPanel() {
         <div className="flex-1 overflow-y-auto p-5">
           {view.kind === 'partner' ? (
             <PartnerProfile partner={view.partner} />
-          ) : (
+          ) : view.kind === 'classification' ? (
             <ClassificationList classification={view.classification} partners={view.partners} />
+          ) : (
+            <GenericList partners={view.partners} />
           )}
         </div>
       </div>
@@ -193,6 +195,50 @@ function ClassificationList({ classification, partners }: { classification: Clas
                 <span className="text-xs text-text-muted">{p.integrationType}</span>
                 {(p.customerCount ?? 0) > 0 && (
                   <span className="text-xs text-text-muted ml-auto">{p.customerCount!.toLocaleString()} customers</span>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── Generic List (for status/category/KPI drill-downs) ─────────
+
+function GenericList({ partners }: { partners: Partner[] }) {
+  return (
+    <div className="flex flex-col gap-4">
+      <span className="text-sm text-text-secondary">
+        {partners.length} compan{partners.length === 1 ? 'y' : 'ies'}
+      </span>
+
+      {partners.length === 0 ? (
+        <p className="text-sm text-text-muted italic">No companies match this filter.</p>
+      ) : (
+        <div className="flex flex-col gap-2">
+          {partners.map((p) => (
+            <div
+              key={p.id}
+              className={`bg-surface-800 rounded-lg p-3 border ${
+                p.partnershipType === 'Product Partnership'
+                  ? 'border-partnership-product/40'
+                  : 'border-border'
+              }`}
+            >
+              <div className="flex items-center gap-2">
+                <p className="text-sm font-medium text-text-primary">{p.name}</p>
+                {p.partnershipType === 'Product Partnership' && (
+                  <span className="text-[10px] font-medium text-partnership-product">Product</span>
+                )}
+              </div>
+              {p.description && <p className="text-xs text-text-muted mt-1">{p.description}</p>}
+              <div className="flex items-center gap-3 mt-2">
+                <Badge label={p.classification} variant="classification" />
+                <span className="text-xs text-text-muted">{p.airtableStatus}</span>
+                {p.category && p.category !== 'Uncategorized' && (
+                  <span className="text-xs text-text-muted ml-auto">{p.category}</span>
                 )}
               </div>
             </div>

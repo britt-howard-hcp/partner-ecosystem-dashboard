@@ -83,6 +83,24 @@ export function buildClassificationVolumeData(partners: Partner[]): Classificati
     .sort((a, b) => b.count - a.count);
 }
 
+// ─── Category Distribution ───────────────────────────────────────
+
+export interface CategoryDistributionDataPoint {
+  category: string;
+  count: number;
+}
+
+export function buildCategoryDistributionData(partners: Partner[]): CategoryDistributionDataPoint[] {
+  const counts = new Map<string, number>();
+  for (const p of partners) {
+    const cat = p.category || 'Uncategorized';
+    counts.set(cat, (counts.get(cat) ?? 0) + 1);
+  }
+  return Array.from(counts.entries())
+    .map(([category, count]) => ({ category, count }))
+    .sort((a, b) => b.count - a.count);
+}
+
 // ─── Status Distribution ─────────────────────────────────────────
 
 export interface StatusDistributionDataPoint {
