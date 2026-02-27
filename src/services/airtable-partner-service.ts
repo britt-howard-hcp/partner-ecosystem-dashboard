@@ -5,6 +5,7 @@ import { partners as fakePartners } from '../data/partners';
 
 interface AirtableRecord {
   id: string;
+  createdTime?: string;
   fields: Record<string, unknown>;
 }
 
@@ -44,23 +45,23 @@ function parseMutualPros(value: unknown): number | undefined {
 
 function mapRecord(record: AirtableRecord): Partner {
   const f = record.fields;
-  const name = str(f['Company name']);
+  const name = str(f['App']);
   const override = getOverride(name);
   const dashboardStatus = mapStatus(str(f['Status'])) as Status;
 
   return {
     id: record.id,
     name,
-    website: str(f['Website']) || undefined,
-    description: str(f['Description']) || str(f['What does the company do?']) || undefined,
+    website: strOrUndef(f['Website']),
+    description: strOrUndef(f['Description']) || strOrUndef(f['Recommendation']),
     classification: override.classification,
     partnershipType: override.partnershipType,
     status: dashboardStatus,
     integrationType: override.integrationType,
-    requestDate: str(f['Date']) || str(f['Created']) || undefined,
+    requestDate: strOrUndef(f['Added']) || record.createdTime?.slice(0, 10) || undefined,
     customerCount: parseNum(f['Customers']) || parseNum(f['# Pros']) || undefined,
-    integrationRequest: str(f['Proposed Integration']) || undefined,
-    whyIntegrate: str(f['What does the company do?']) || undefined,
+    integrationRequest: strOrUndef(f['Proposed Integration']),
+    whyIntegrate: strOrUndef(f['Recommendation']),
     mutualCustomers: parseMutualPros(f['Mutual Pros']),
     contactName: strOrUndef(f['Name (from Contacts)']),
     contactEmail: strOrUndef(f['Email (from Contacts)']),

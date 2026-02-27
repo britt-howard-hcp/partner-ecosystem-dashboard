@@ -30,7 +30,7 @@ export interface PartnerOverride {
 }
 
 /**
- * Keyed by company name (must match Airtable "Company name" field exactly).
+ * Keyed by company name (must match Airtable "App" field exactly).
  * Case-sensitive — normalize before lookup if needed.
  */
 export const classificationOverrides: Record<string, PartnerOverride> = {
