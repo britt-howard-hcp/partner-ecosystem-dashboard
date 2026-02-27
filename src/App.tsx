@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { PasswordGate } from './components/auth/PasswordGate';
 import { DashboardProvider } from './context/DashboardContext';
 import { DashboardShell } from './components/layout/DashboardShell';
 import { Header } from './components/layout/Header';
@@ -14,17 +15,19 @@ export default function App() {
   const [askOpen, setAskOpen] = useState(false);
 
   return (
-    <DashboardProvider>
-      <DashboardShell>
-        <Header />
-        <FilterBar />
-        <MarketPulse />
-        <NarrativeBlock />
-        <PartnerTable />
-      </DashboardShell>
-      <DetailPanel />
-      {!askOpen && <AskFab onClick={() => setAskOpen(true)} />}
-      {askOpen && <AskPanel onClose={() => setAskOpen(false)} />}
-    </DashboardProvider>
+    <PasswordGate>
+      <DashboardProvider>
+        <DashboardShell>
+          <Header />
+          <FilterBar />
+          <MarketPulse />
+          <NarrativeBlock />
+          <PartnerTable />
+        </DashboardShell>
+        <DetailPanel />
+        {!askOpen && <AskFab onClick={() => setAskOpen(true)} />}
+        {askOpen && <AskPanel onClose={() => setAskOpen(false)} />}
+      </DashboardProvider>
+    </PasswordGate>
   );
 }
