@@ -7,7 +7,7 @@ export function NarrativeBlock() {
   const { classificationVolumeData } = useChartData();
 
   const narrative = useMemo(() => {
-    if (partners.length === 0) return 'No partners match the current filters.';
+    if (partners.length === 0) return 'No companies match the current filters.';
 
     const total = partners.length;
     const active = partnersByStatus.Active.length;
@@ -21,10 +21,10 @@ export function NarrativeBlock() {
     if (total > 0 && active > 0) {
       const selectivityRate = Math.round(((total - active) / total) * 100);
       sentences.push(
-        `HCP's integration ecosystem has processed ${total} partner requests, maintaining a ${selectivityRate}% selectivity rate with ${active} live integration${active === 1 ? '' : 's'}.`,
+        `HCP's integration ecosystem has processed ${total} ecosystem requests, maintaining a ${selectivityRate}% selectivity rate with ${active} live integration${active === 1 ? '' : 's'}.`,
       );
     } else {
-      sentences.push(`Viewing ${total} partner request${total === 1 ? '' : 's'} in HCP's ecosystem.`);
+      sentences.push(`Viewing ${total} ecosystem request${total === 1 ? '' : 's'} in HCP's ecosystem.`);
     }
 
     // Pipeline activity
@@ -50,7 +50,7 @@ export function NarrativeBlock() {
     const topCls = classificationVolumeData[0];
     if (topCls && topCls.count > 0) {
       sentences.push(
-        `${topCls.classification} leads classification volume with ${topCls.count} partner${topCls.count === 1 ? '' : 's'}.`,
+        `${topCls.classification} leads classification volume with ${topCls.count} compan${topCls.count === 1 ? 'y' : 'ies'}.`,
       );
     }
 

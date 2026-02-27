@@ -23,4 +23,7 @@ export interface Partner {
   contactName?: string;
   contactEmail?: string;
   notes?: string;
+  category?: string;
+  airtableStatus: string;
+  enrichedFields: string[];
 }

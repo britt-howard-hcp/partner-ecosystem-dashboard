@@ -1,6 +1,6 @@
 import { VolumeChart } from './VolumeChart';
 import { CategoryBreakdown } from './CategoryBreakdown';
-import { CategoryBarChart } from './CategoryBarChart';
+import { StatusDistribution } from './StatusDistribution';
 
 export function MarketPulse() {
   return (
@@ -11,7 +11,7 @@ export function MarketPulse() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <VolumeChart />
         <CategoryBreakdown />
-        <CategoryBarChart />
+        <StatusDistribution />
       </div>
     </section>
   );

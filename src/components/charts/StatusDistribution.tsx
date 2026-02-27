@@ -1,37 +1,34 @@
-import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 import { useChartData } from '../../hooks/useChartData';
 
-export function VolumeChart() {
-  const { volumeData } = useChartData();
+export function StatusDistribution() {
+  const { statusDistributionData } = useChartData();
+  const hasData = statusDistributionData.some((d) => d.count > 0);
 
   return (
     <div>
       <h3 className="text-sm font-semibold text-text-secondary uppercase tracking-wider mb-3">
-        Request Volume
+        Pipeline Stages
       </h3>
       <div className="bg-surface-800 rounded-lg p-4 border border-border h-[320px]">
-        {volumeData.length === 0 ? (
+        {!hasData ? (
           <p className="text-sm text-text-muted italic flex items-center justify-center h-full">
             No data for selected filters
           </p>
         ) : (
           <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={volumeData}>
-              <defs>
-                <linearGradient id="volumeGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#6366f1" stopOpacity={0.4} />
-                  <stop offset="100%" stopColor="#6366f1" stopOpacity={0} />
-                </linearGradient>
-              </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#2e3348" />
+            <BarChart data={statusDistributionData} layout="vertical" margin={{ left: 30, right: 20 }}>
               <XAxis
-                dataKey="month"
+                type="number"
+                allowDecimals={false}
                 tick={{ fill: '#94a3b8', fontSize: 11 }}
                 axisLine={{ stroke: '#2e3348' }}
                 tickLine={false}
               />
               <YAxis
-                allowDecimals={false}
+                type="category"
+                dataKey="stage"
+                width={130}
                 tick={{ fill: '#94a3b8', fontSize: 11 }}
                 axisLine={{ stroke: '#2e3348' }}
                 tickLine={false}
@@ -44,16 +41,14 @@ export function VolumeChart() {
                   color: '#f1f5f9',
                   fontSize: 12,
                 }}
+                formatter={(value) => [value, 'Companies']}
               />
-              <Area
-                type="monotone"
-                dataKey="count"
-                stroke="#6366f1"
-                strokeWidth={2}
-                fill="url(#volumeGradient)"
-                name="Companies"
-              />
-            </AreaChart>
+              <Bar dataKey="count" name="Companies" radius={[0, 4, 4, 0]}>
+                {statusDistributionData.map((entry) => (
+                  <Cell key={entry.stage} fill={entry.color} />
+                ))}
+              </Bar>
+            </BarChart>
           </ResponsiveContainer>
         )}
       </div>

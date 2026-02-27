@@ -2,7 +2,7 @@ import { usePartners } from '../../hooks/usePartners';
 import { StatCard } from '../stats/StatCard';
 
 export function Header() {
-  const { total, partnersByStatus, coreConflictCount, mutualHcpCustomers } = usePartners();
+  const { total, liveCount, inPipelineCount, categoriesRepresentedCount, controlledCount } = usePartners();
 
   const today = new Date().toLocaleDateString('en-US', {
     weekday: 'long',
@@ -22,10 +22,10 @@ export function Header() {
       </div>
       <div className="flex gap-4 flex-wrap">
         <StatCard label="Ecosystem Requests" value={total} borderColor="border-accent-500" />
-        <StatCard label="In Evaluation" value={partnersByStatus.Evaluating.length} borderColor="border-stage-evaluating" />
-        <StatCard label="Live Integrations" value={partnersByStatus.Active.length} borderColor="border-stage-active" />
-        <StatCard label="Core Conflicts" value={coreConflictCount} borderColor="border-cls-core-conflict" />
-        <StatCard label="Mutual HCP Customers" value={mutualHcpCustomers.toLocaleString()} borderColor="border-accent-400" />
+        <StatCard label="Live Integrations" value={liveCount} borderColor="border-stage-active" />
+        <StatCard label="In Pipeline" value={inPipelineCount} borderColor="border-stage-evaluating" />
+        <StatCard label="Categories Represented" value={categoriesRepresentedCount} borderColor="border-accent-400" />
+        <StatCard label="Controlled Requests" value={controlledCount} borderColor="border-cls-controlled" />
       </div>
     </header>
   );

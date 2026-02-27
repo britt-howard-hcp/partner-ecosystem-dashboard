@@ -43,11 +43,39 @@ function parseMutualPros(value: unknown): number | undefined {
   return n > 0 ? n : undefined;
 }
 
+/** Normalize known typos and case inconsistencies in category values. */
+function normalizeCategory(raw: string): string {
+  if (raw.toLowerCase() === 'insurane') return 'Insurance';
+  return raw;
+}
+
+/** Normalize known case inconsistencies in status values. */
+function normalizeStatus(raw: string): string {
+  if (raw === 'Not Moving forward') return 'Not Moving Forward';
+  return raw;
+}
+
 function mapRecord(record: AirtableRecord): Partner {
   const f = record.fields;
   const name = str(f['App']);
   const override = getOverride(name);
-  const dashboardStatus = mapStatus(str(f['Status'])) as Status;
+
+  const rawStatus = normalizeStatus(str(f['Status']));
+  const dashboardStatus = mapStatus(rawStatus) as Status;
+
+  // Category: Airtable is primary, override is fallback, "Uncategorized" is last resort
+  const airtableCategory = str(f['Category']);
+  const normalizedCategory = airtableCategory ? normalizeCategory(airtableCategory) : '';
+  const category = normalizedCategory || override.category || 'Uncategorized';
+
+  // Track which fields came from overrides rather than Airtable
+  const enrichedFields: string[] = [];
+  enrichedFields.push('classification');
+  enrichedFields.push('integrationType');
+  enrichedFields.push('partnershipType');
+  if (!normalizedCategory && override.category) {
+    enrichedFields.push('category');
+  }
 
   return {
     id: record.id,
@@ -66,6 +94,9 @@ function mapRecord(record: AirtableRecord): Partner {
     contactName: strOrUndef(f['Name (from Contacts)']),
     contactEmail: strOrUndef(f['Email (from Contacts)']),
     notes: strOrUndef(f['Notes URL']),
+    category,
+    airtableStatus: rawStatus,
+    enrichedFields,
   };
 }
 

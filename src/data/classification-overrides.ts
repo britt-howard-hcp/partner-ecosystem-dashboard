@@ -27,6 +27,7 @@ export interface PartnerOverride {
   classification: Classification;
   integrationType: IntegrationType;
   partnershipType: PartnershipType;
+  category?: string;
 }
 
 /**
@@ -41,353 +42,420 @@ export const classificationOverrides: Record<string, PartnerOverride> = {
   'Ply': {
     classification: 'Open',
     integrationType: 'API',
-    partnershipType: 'Product Partnership', // Deep two-way integration, dedicated eng
+    partnershipType: 'Product Partnership',
+    category: 'Fintech',
   },
 
   // =========================================================================
   // DISCOVERY (4)
   // =========================================================================
   'Torus AI': {
-    classification: 'Controlled',   // CSR AI — touches customer communication
+    classification: 'Controlled',
     integrationType: 'API',
     partnershipType: 'Ecosystem Partnership',
+    category: 'CSR AI',
   },
   'Fixle': {
-    classification: 'Controlled',   // Automation + Job Inbox — touches lead intake/job creation
+    classification: 'Controlled',
     integrationType: 'OAuth',
     partnershipType: 'Ecosystem Partnership',
+    category: 'Automation',
   },
   'Townsquare Ignite': {
-    classification: 'Open',         // Marketing platform — enhances workflows
+    classification: 'Open',
     integrationType: 'OAuth',
     partnershipType: 'Ecosystem Partnership',
+    category: 'Marketing',
   },
   'RealWork Labs': {
-    classification: 'Open',         // Marketing/reviews/websites — enhances workflows
+    classification: 'Open',
     integrationType: 'OAuth',
     partnershipType: 'Ecosystem Partnership',
+    category: 'Marketing',
   },
 
   // =========================================================================
   // NOT MOVING FORWARD (1)
   // =========================================================================
   'Stratify AI': {
-    classification: 'Controlled',   // CSR AI — touches customer communication
+    classification: 'Controlled',
     integrationType: 'API',
     partnershipType: 'Ecosystem Partnership',
+    category: 'CSR AI',
   },
 
   // =========================================================================
   // UNEXPLORED (8)
   // =========================================================================
   'Vistr': {
-    classification: 'Controlled',   // AI receptionist — books appointments, touches scheduling
+    classification: 'Controlled',
     integrationType: 'API',
     partnershipType: 'Ecosystem Partnership',
+    category: 'Answering Service',
   },
   'Onduty24': {
-    classification: 'Open',         // HVAC estimating software — trade tools
+    classification: 'Open',
     integrationType: 'API',
     partnershipType: 'Ecosystem Partnership',
+    category: 'Trade Tools',
   },
   'HVACRanker': {
-    classification: 'Controlled',   // AI voice SDR — touches scheduling/customer communication
+    classification: 'Controlled',
     integrationType: 'API',
     partnershipType: 'Ecosystem Partnership',
+    category: 'AI',
   },
   'Tekumbrella': {
-    classification: 'Controlled',   // SMS lead capture — touches lead intake
+    classification: 'Controlled',
     integrationType: 'Webhook',
     partnershipType: 'Ecosystem Partnership',
+    category: 'Lead Gen',
   },
   'TEK Consulting LLC': {
-    classification: 'Open',         // ERP integration/consulting — business ops
+    classification: 'Open',
     integrationType: 'API',
     partnershipType: 'Ecosystem Partnership',
+    category: 'Business Ops & Growth',
   },
   'CaptureContact': {
-    classification: 'Controlled',   // AI call answering + booking — touches scheduling
+    classification: 'Controlled',
     integrationType: 'API',
     partnershipType: 'Ecosystem Partnership',
+    category: 'Answering Service',
   },
   'xceleran': {
-    classification: 'Open',         // Small business ERP via QuickBooks
+    classification: 'Open',
     integrationType: 'API',
     partnershipType: 'Ecosystem Partnership',
+    category: 'Accounting',
   },
   'Newo.AI': {
-    classification: 'Controlled',   // AI agents for phone — touches customer communication
+    classification: 'Controlled',
     integrationType: 'API',
     partnershipType: 'Ecosystem Partnership',
+    category: 'AI',
   },
 
   // =========================================================================
   // INITIAL CALL (53)
   // =========================================================================
   'Nuve': {
-    classification: 'Open',         // Smart thermostat automation — field tools
+    classification: 'Open',
     integrationType: 'API',
     partnershipType: 'Ecosystem Partnership',
+    category: 'Smart Thermostat',
   },
   'JustApp': {
-    classification: 'Controlled',   // Custom branded app with job tracking — touches core workflows
+    classification: 'Controlled',
     integrationType: 'API',
     partnershipType: 'Ecosystem Partnership',
+    category: 'Productivity',
   },
   'LettrLabs': {
-    classification: 'Open',         // Direct mail marketing automation
+    classification: 'Open',
     integrationType: 'OAuth',
     partnershipType: 'Ecosystem Partnership',
+    category: 'Postcards',
   },
   'SurgePoint': {
-    classification: 'Open',         // Growth automation — reviews, referrals, rebooking
+    classification: 'Open',
     integrationType: 'OAuth',
     partnershipType: 'Ecosystem Partnership',
+    category: 'Reviews',
   },
   'Marchex': {
-    classification: 'Controlled',   // Call tracking/intelligence — touches voice data
+    classification: 'Controlled',
     integrationType: 'API',
     partnershipType: 'Ecosystem Partnership',
+    category: 'Call/VOIP',
   },
   'Dexcomm Answering Service': {
-    classification: 'Controlled',   // Answering service — creates jobs, touches scheduling
+    classification: 'Controlled',
     integrationType: 'API',
     partnershipType: 'Ecosystem Partnership',
+    category: 'Answering Service',
   },
   'FieldStockPro Inc,': {
-    classification: 'Open',         // Inventory management — field tools
+    classification: 'Open',
     integrationType: 'API',
     partnershipType: 'Ecosystem Partnership',
+    category: 'Inventory Management',
   },
   'Neon Fox | Dialbox': {
-    classification: 'Controlled',   // AI phone answering + booking — touches scheduling
+    classification: 'Controlled',
     integrationType: 'OAuth',
     partnershipType: 'Ecosystem Partnership',
+    category: 'Answering Service',
   },
   'Revalytics': {
-    classification: 'Controlled',   // Analytics touching customer data + advanced API
+    classification: 'Controlled',
     integrationType: 'API',
     partnershipType: 'Ecosystem Partnership',
+    category: 'Reporting',
   },
   'MyMethod, LLC': {
-    classification: 'Controlled',   // AI voice — books appointments, touches scheduling
+    classification: 'Controlled',
     integrationType: 'API',
     partnershipType: 'Ecosystem Partnership',
+    category: 'AI',
   },
   'ArcSite': {
-    classification: 'Open',         // Mobile CAD drawing — trade tools
+    classification: 'Open',
     integrationType: 'API',
     partnershipType: 'Ecosystem Partnership',
+    category: 'Trade Tools',
   },
   'Upstart': {
-    classification: 'Open',         // Consumer lending/financing — fintech widget
+    classification: 'Open',
     integrationType: 'Embedded',
     partnershipType: 'Ecosystem Partnership',
+    category: 'Financing',
   },
   'Applause': {
-    classification: 'Open',         // Employee bonus/engagement — payroll/HR
+    classification: 'Open',
     integrationType: 'API',
     partnershipType: 'Ecosystem Partnership',
+    category: 'Performance Pay',
   },
   'Review Harvest': {
-    classification: 'Open',         // Review management — marketing
+    classification: 'Open',
     integrationType: 'OAuth',
     partnershipType: 'Ecosystem Partnership',
+    category: 'Reviews',
   },
   'Redo': {
-    classification: 'Controlled',   // CSR AI — touches customer communication
+    classification: 'Controlled',
     integrationType: 'API',
     partnershipType: 'Ecosystem Partnership',
+    category: 'CSR AI',
   },
   'Chapter One': {
-    classification: 'Controlled',   // AI agents + lead management + scheduling (HCP stays SOR)
+    classification: 'Controlled',
     integrationType: 'API',
     partnershipType: 'Ecosystem Partnership',
+    category: 'AI',
   },
   'Serv': {
-    classification: 'Controlled',   // E-commerce booking tool — touches scheduling
+    classification: 'Controlled',
     integrationType: 'API',
     partnershipType: 'Ecosystem Partnership',
+    category: 'Booking',
   },
   'Oply': {
-    classification: 'Controlled',   // Job Inbox — touches lead intake
+    classification: 'Controlled',
     integrationType: 'API',
     partnershipType: 'Ecosystem Partnership',
+    category: 'Job Inbox',
   },
   'Chatavise': {
-    classification: 'Open',         // Reviews/surveys via text — marketing
+    classification: 'Open',
     integrationType: 'API',
     partnershipType: 'Ecosystem Partnership',
+    category: 'Reviews',
   },
   'HVAC Quote': {
-    classification: 'Open',         // Online quote tool — trade tools/marketing
+    classification: 'Open',
     integrationType: 'API',
     partnershipType: 'Ecosystem Partnership',
+    category: 'Trade Tools',
   },
   'LSArespond': {
-    classification: 'Controlled',   // AI + CSR AI + Job Inbox — touches lead intake
+    classification: 'Controlled',
     integrationType: 'API',
     partnershipType: 'Ecosystem Partnership',
+    category: 'CSR AI',
   },
   'Fizzy AI': {
-    classification: 'Open',         // API normalization layer — infrastructure tool
+    classification: 'Open',
     integrationType: 'API',
     partnershipType: 'Ecosystem Partnership',
+    category: 'AI',
   },
   'TeamBuyIn': {
-    classification: 'Open',         // Performance pay — payroll/HR
+    classification: 'Open',
     integrationType: 'API',
     partnershipType: 'Ecosystem Partnership',
+    category: 'Performance Pay',
   },
   'Outreach Genius': {
-    classification: 'Controlled',   // CSR AI + demand gen — touches customer communication
+    classification: 'Controlled',
     integrationType: 'API',
     partnershipType: 'Ecosystem Partnership',
+    category: 'CSR AI',
   },
   'Truly Legit': {
-    classification: 'Open',         // Insurance verification
+    classification: 'Open',
     integrationType: 'API',
     partnershipType: 'Ecosystem Partnership',
+    category: 'Insurance',
   },
   'Checkr': {
-    classification: 'Open',         // Background checks
+    classification: 'Open',
     integrationType: 'API',
     partnershipType: 'Ecosystem Partnership',
+    category: 'Background Checks',
   },
   'Hibu': {
-    classification: 'Open',         // Reviews/marketing — took over Signpost integration
+    classification: 'Open',
     integrationType: 'API',
     partnershipType: 'Ecosystem Partnership',
+    category: 'Reviews',
   },
   'Option Builder (Service MVP)': {
-    classification: 'Open',         // AI sales proposals — productivity tool
+    classification: 'Open',
     integrationType: 'API',
     partnershipType: 'Ecosystem Partnership',
+    category: 'Productivity',
   },
   'Noso Labs': {
-    classification: 'Open',         // HVAC trade tools — diagnostics, manuals, proposals
+    classification: 'Open',
     integrationType: 'API',
     partnershipType: 'Ecosystem Partnership',
+    category: 'Trade Tools',
   },
   'Siro AI': {
-    classification: 'Open',         // Call/sales review coaching — analytics
+    classification: 'Open',
     integrationType: 'API',
     partnershipType: 'Ecosystem Partnership',
+    category: 'AI',
   },
   'Vantaca': {
-    classification: 'Controlled',   // Property management SOR — touches job creation
+    classification: 'Controlled',
     integrationType: 'API',
     partnershipType: 'Ecosystem Partnership',
+    category: 'CRM',
   },
   'Prokeep': {
-    classification: 'Open',         // Distributor communication/POs — purchasing
+    classification: 'Open',
     integrationType: 'API',
     partnershipType: 'Ecosystem Partnership',
+    category: 'Purchasing',
   },
   'Distance AI': {
-    classification: 'Controlled',   // CSR AI — touches customer communication
+    classification: 'Controlled',
     integrationType: 'API',
     partnershipType: 'Ecosystem Partnership',
+    category: 'CSR AI',
   },
   'TractorbeamAI': {
-    classification: 'Open',         // General AI automation
+    classification: 'Open',
     integrationType: 'API',
     partnershipType: 'Ecosystem Partnership',
+    category: 'AI',
   },
   '1-800-REPAIRS': {
-    classification: 'Controlled',   // Lead gen + Job Inbox — touches lead intake
+    classification: 'Controlled',
     integrationType: 'API',
     partnershipType: 'Ecosystem Partnership',
+    category: 'Lead Gen',
   },
   'Hatch': {
-    classification: 'Controlled',   // CSR AI + chat — touches customer communication
+    classification: 'Controlled',
     integrationType: 'API',
     partnershipType: 'Ecosystem Partnership',
+    category: 'CSR AI',
   },
   'Accuprice': {
-    classification: 'Open',         // Pricebook/CSV tool — trade tools
+    classification: 'Open',
     integrationType: 'Data Sync',
     partnershipType: 'Ecosystem Partnership',
+    category: 'Pricebook',
   },
   'Frontdesk': {
-    classification: 'Controlled',   // AI receptionist — books appointments
+    classification: 'Controlled',
     integrationType: 'API',
     partnershipType: 'Ecosystem Partnership',
+    category: 'Answering Service',
   },
   'Blueboost': {
-    classification: 'Open',         // AI estimate writer — productivity tool
+    classification: 'Open',
     integrationType: 'API',
     partnershipType: 'Ecosystem Partnership',
+    category: 'Productivity',
   },
   'Sharewillow': {
-    classification: 'Open',         // Incentive plan management — payroll/HR
+    classification: 'Open',
     integrationType: 'API',
     partnershipType: 'Ecosystem Partnership',
+    category: 'Payroll',
   },
   'Myreigns': {
-    classification: 'Open',         // Phantom equity/performance pay — payroll/HR
+    classification: 'Open',
     integrationType: 'API',
     partnershipType: 'Ecosystem Partnership',
+    category: 'Performance Pay',
   },
   'Lowe\'s | Installation Made Easy': {
-    classification: 'Controlled',   // Job distribution aggregator — touches lead intake
+    classification: 'Controlled',
     integrationType: 'API',
     partnershipType: 'Ecosystem Partnership',
+    category: 'Aggregator',
   },
   'Conju.ai': {
-    classification: 'Controlled',   // AI texts after missed calls — touches customer communication
+    classification: 'Controlled',
     integrationType: 'API',
     partnershipType: 'Ecosystem Partnership',
+    category: 'Communication',
   },
   'Tooldesk.co': {
-    classification: 'Controlled',   // Pivoted to CSR AI — touches customer communication
+    classification: 'Controlled',
     integrationType: 'API',
     partnershipType: 'Ecosystem Partnership',
+    category: 'CSR AI',
   },
   'Aura.ai': {
-    classification: 'Open',         // Consumer-facing maintenance/lead gen — marketing
+    classification: 'Open',
     integrationType: 'API',
     partnershipType: 'Ecosystem Partnership',
+    category: 'Marketing',
   },
   'Porch': {
-    classification: 'Controlled',   // Lead aggregator + Job Inbox — touches lead intake
+    classification: 'Controlled',
     integrationType: 'API',
     partnershipType: 'Ecosystem Partnership',
+    category: 'Aggregator',
   },
   'Carputty': {
-    classification: 'Open',         // Auto credit line — fintech/fleet
+    classification: 'Open',
     integrationType: 'Embedded',
     partnershipType: 'Ecosystem Partnership',
+    category: 'Fintech',
   },
   'LeadChimp': {
-    classification: 'Controlled',   // Lead gen — touches lead intake
+    classification: 'Controlled',
     integrationType: 'API',
     partnershipType: 'Ecosystem Partnership',
+    category: 'Lead Gen',
   },
   'Garage.com': {
-    classification: 'Controlled',   // Lead gen + Job Inbox — touches lead intake
+    classification: 'Controlled',
     integrationType: 'API',
     partnershipType: 'Ecosystem Partnership',
+    category: 'Lead Gen',
   },
   'Plecto': {
-    classification: 'Open',         // Reporting/dashboarding — analytics
+    classification: 'Open',
     integrationType: 'API',
     partnershipType: 'Ecosystem Partnership',
+    category: 'Reporting',
   },
   'StreetFair': {
-    classification: 'Controlled',   // Lead gen + Job Inbox — touches lead intake
+    classification: 'Controlled',
     integrationType: 'OAuth',
     partnershipType: 'Ecosystem Partnership',
+    category: 'Lead Gen',
   },
   'Lace AI': {
-    classification: 'Controlled',   // Call intelligence/VOIP — touches voice data
+    classification: 'Controlled',
     integrationType: 'API',
     partnershipType: 'Ecosystem Partnership',
+    category: 'Call/VOIP',
   },
   'VIIRL': {
-    classification: 'Open',         // Multi-channel marketing platform
+    classification: 'Open',
     integrationType: 'API',
     partnershipType: 'Ecosystem Partnership',
+    category: 'Marketing',
   },
 };
 
@@ -405,9 +473,9 @@ export const statusMapping: Record<string, string> = {
   'Pilot':               'Onboarding',
   'Signed Agreements':   'Onboarding',
   'Not Moving forward':  'Declined',
-  'Not Moving Forward':  'Declined',      // handle case variation
+  'Not Moving Forward':  'Declined',
   'Deactivated Partner': 'Declined',
-  'Hidden Partner':      'Declined',       // or exclude entirely
+  'Hidden Partner':      'Declined',
 };
 
 /**
@@ -416,8 +484,8 @@ export const statusMapping: Record<string, string> = {
  */
 export function getOverride(companyName: string): PartnerOverride {
   return classificationOverrides[companyName] ?? {
-    classification: 'Open',                    // safe default
-    integrationType: 'API',                    // most common
+    classification: 'Open',
+    integrationType: 'API',
     partnershipType: 'Ecosystem Partnership',
   };
 }

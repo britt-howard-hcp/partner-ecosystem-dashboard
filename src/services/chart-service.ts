@@ -82,3 +82,51 @@ export function buildClassificationVolumeData(partners: Partner[]): Classificati
     }))
     .sort((a, b) => b.count - a.count);
 }
+
+// ─── Status Distribution ─────────────────────────────────────────
+
+export interface StatusDistributionDataPoint {
+  stage: string;
+  count: number;
+  color: string;
+}
+
+/** Pipeline stage order and colors. */
+const stageOrder = [
+  'Unexplored',
+  'Initial Call',
+  'Discovery',
+  'Pilot',
+  'Signed Agreements',
+  'Live',
+  'Not Moving Forward',
+  'Deactivated Partner',
+  'Hidden Partner',
+] as const;
+
+const stageColorMap: Record<string, string> = {
+  'Unexplored':          '#94a3b8', // slate
+  'Initial Call':        '#6366f1', // indigo
+  'Discovery':           '#8b5cf6', // violet
+  'Pilot':               '#06b6d4', // cyan
+  'Signed Agreements':   '#14b8a6', // teal
+  'Live':                '#10b981', // emerald
+  'Not Moving Forward':  '#ef4444', // red
+  'Deactivated Partner': '#f87171', // red-light
+  'Hidden Partner':      '#78716c', // stone
+};
+
+export function buildStatusDistributionData(partners: Partner[]): StatusDistributionDataPoint[] {
+  const counts = new Map<string, number>();
+  for (const p of partners) {
+    const stage = p.airtableStatus || 'Unknown';
+    counts.set(stage, (counts.get(stage) ?? 0) + 1);
+  }
+  return stageOrder
+    .map((stage) => ({
+      stage,
+      count: counts.get(stage) ?? 0,
+      color: stageColorMap[stage] ?? '#94a3b8',
+    }))
+    .filter((d) => d.count > 0);
+}

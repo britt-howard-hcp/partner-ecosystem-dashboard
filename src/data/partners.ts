@@ -21,6 +21,9 @@ export const partners: Partner[] = [
     contactName: 'Dana Moretti',
     contactEmail: 'dana@reviewbridge.io',
     notes: 'Legacy integration. Renewed annually. Strong engagement metrics.',
+    category: 'Reviews',
+    airtableStatus: 'Live',
+    enrichedFields: ['classification', 'integrationType', 'partnershipType', 'category'],
   },
   {
     id: 'p-02',
@@ -39,6 +42,9 @@ export const partners: Partner[] = [
     contactName: 'Marcus Chen',
     contactEmail: 'partnerships@partsnow.com',
     notes: 'Highest mutual customer overlap. Co-marketing agreement in place.',
+    category: 'Inventory Management',
+    airtableStatus: 'Live',
+    enrichedFields: ['classification', 'integrationType', 'partnershipType', 'category'],
   },
   {
     id: 'p-03',
@@ -56,6 +62,9 @@ export const partners: Partner[] = [
     mutualCustomers: 4800,
     contactName: 'Sarah Whitfield',
     contactEmail: 'sarah@compliancehub.io',
+    category: 'Licensing/verification',
+    airtableStatus: 'Live',
+    enrichedFields: ['classification', 'integrationType', 'partnershipType', 'category'],
   },
   {
     id: 'p-04',
@@ -73,6 +82,9 @@ export const partners: Partner[] = [
     mutualCustomers: 2900,
     contactName: 'James Okoro',
     contactEmail: 'james@safehire.com',
+    category: 'Background Checks',
+    airtableStatus: 'Live',
+    enrichedFields: ['classification', 'integrationType', 'partnershipType', 'category'],
   },
   {
     id: 'p-05',
@@ -90,6 +102,9 @@ export const partners: Partner[] = [
     mutualCustomers: 3800,
     contactName: 'Lisa Tran',
     contactEmail: 'lisa.tran@greenflag.co',
+    category: 'Insurance',
+    airtableStatus: 'Live',
+    enrichedFields: ['classification', 'integrationType', 'partnershipType', 'category'],
   },
   {
     id: 'p-06',
@@ -107,6 +122,9 @@ export const partners: Partner[] = [
     mutualCustomers: 1800,
     contactName: 'Kevin Marsh',
     contactEmail: 'kevin@trainuppro.com',
+    category: 'Trade Tools',
+    airtableStatus: 'Live',
+    enrichedFields: ['classification', 'integrationType', 'partnershipType', 'category'],
   },
   {
     id: 'p-07',
@@ -124,6 +142,9 @@ export const partners: Partner[] = [
     mutualCustomers: 2200,
     contactName: 'Amy Rostova',
     contactEmail: 'amy@photodocpro.com',
+    category: 'Reporting',
+    airtableStatus: 'Live',
+    enrichedFields: ['classification', 'integrationType', 'partnershipType', 'category'],
   },
   {
     id: 'p-08',
@@ -141,6 +162,9 @@ export const partners: Partner[] = [
     mutualCustomers: 3400,
     contactName: 'Tom Haverford',
     contactEmail: 'tom@fleetpulse.io',
+    category: 'GPS',
+    airtableStatus: 'Live',
+    enrichedFields: ['classification', 'integrationType', 'partnershipType', 'category'],
   },
   {
     id: 'p-09',
@@ -158,6 +182,9 @@ export const partners: Partner[] = [
     mutualCustomers: 1500,
     contactName: 'Rachel Kim',
     contactEmail: 'rachel@subconnect.co',
+    category: 'Services',
+    airtableStatus: 'Live',
+    enrichedFields: ['classification', 'integrationType', 'partnershipType', 'category'],
   },
   {
     id: 'p-10',
@@ -176,6 +203,9 @@ export const partners: Partner[] = [
     contactName: 'Nina Patel',
     contactEmail: 'nina@promailer.io',
     notes: 'Controlled classification due to overlap with HCP\'s built-in email features. Limited to campaign-only access.',
+    category: 'Email',
+    airtableStatus: 'Live',
+    enrichedFields: ['classification', 'integrationType', 'partnershipType', 'category'],
   },
   {
     id: 'p-11',
@@ -194,6 +224,9 @@ export const partners: Partner[] = [
     contactName: 'Derek Simmons',
     contactEmail: 'derek@localboost.com',
     notes: 'Controlled due to lead source attribution concerns. Data sharing agreement signed.',
+    category: 'Marketing',
+    airtableStatus: 'Live',
+    enrichedFields: ['classification', 'integrationType', 'partnershipType', 'category'],
   },
   {
     id: 'p-12',
@@ -212,6 +245,9 @@ export const partners: Partner[] = [
     contactName: 'Chloe Barrett',
     contactEmail: 'chloe@formbuilderpro.com',
     notes: 'Controlled — overlaps with HCP\'s native form features. Scoped to advanced/custom forms only.',
+    category: 'Checklists/Forms',
+    airtableStatus: 'Live',
+    enrichedFields: ['classification', 'integrationType', 'partnershipType', 'category'],
   },
 
   // ============================================================
@@ -233,6 +269,9 @@ export const partners: Partner[] = [
     contactName: 'Victor Osei',
     contactEmail: 'victor@homebaseops.com',
     notes: 'Core Conflict — directly competes with HCP scheduling and dispatch. Under review to confirm classification.',
+    category: 'Business Ops & Growth',
+    airtableStatus: 'Initial Call',
+    enrichedFields: ['classification', 'integrationType', 'partnershipType', 'category'],
   },
   {
     id: 'p-14',
@@ -249,6 +288,9 @@ export const partners: Partner[] = [
     whyIntegrate: 'Technicians already use PayField for on-site payments. Wants payment events to auto-close jobs in HCP.',
     contactName: 'Raj Anand',
     contactEmail: 'raj@payfield.io',
+    category: 'Payments',
+    airtableStatus: 'Initial Call',
+    enrichedFields: ['classification', 'integrationType', 'partnershipType', 'category'],
   },
   {
     id: 'p-15',
@@ -266,6 +308,9 @@ export const partners: Partner[] = [
     contactName: 'Elena Vasquez',
     contactEmail: 'elena@customervault.com',
     notes: 'Controlled — has dispatch features that overlap. Evaluating whether integration can be scoped to CRM-only.',
+    category: 'CRM',
+    airtableStatus: 'Initial Call',
+    enrichedFields: ['classification', 'integrationType', 'partnershipType', 'category'],
   },
   {
     id: 'p-16',
@@ -282,6 +327,9 @@ export const partners: Partner[] = [
     whyIntegrate: 'Website visitors who book through ChatLeads should appear as jobs in HCP without manual entry.',
     contactName: 'Brian Cho',
     contactEmail: 'brian@chatleads.io',
+    category: 'Lead Gen',
+    airtableStatus: 'Initial Call',
+    enrichedFields: ['classification', 'integrationType', 'partnershipType', 'category'],
   },
   {
     id: 'p-17',
@@ -298,6 +346,9 @@ export const partners: Partner[] = [
     whyIntegrate: 'Homeowners want digital warranty records. Auto-registering warranties at job close improves customer experience.',
     contactName: 'Megan Frost',
     contactEmail: 'megan@warrantyvault.com',
+    category: 'Service',
+    airtableStatus: 'Initial Call',
+    enrichedFields: ['classification', 'integrationType', 'partnershipType', 'category'],
   },
   {
     id: 'p-18',
@@ -314,6 +365,9 @@ export const partners: Partner[] = [
     whyIntegrate: 'Homeowners are more likely to approve large jobs when financing options are presented at quote time.',
     contactName: 'Alan Torres',
     contactEmail: 'alan@funditcapital.com',
+    category: 'Financing',
+    airtableStatus: 'Initial Call',
+    enrichedFields: ['classification', 'integrationType', 'partnershipType', 'category'],
   },
   {
     id: 'p-19',
@@ -328,6 +382,9 @@ export const partners: Partner[] = [
     customerCount: 2100,
     integrationRequest: 'Certification status API for technician profile enrichment',
     whyIntegrate: 'Employers want to verify certifications are current before assigning specialized jobs.',
+    category: 'Licensing/verification',
+    airtableStatus: 'Initial Call',
+    enrichedFields: ['classification', 'integrationType', 'partnershipType', 'category'],
   },
   {
     id: 'p-20',
@@ -342,6 +399,9 @@ export const partners: Partner[] = [
     customerCount: 1800,
     integrationRequest: 'Job data sync to auto-populate compliance report templates',
     whyIntegrate: 'New energy efficiency regulations require audit trails. Pulling job data from HCP eliminates duplicate entry.',
+    category: 'Reporting',
+    airtableStatus: 'Initial Call',
+    enrichedFields: ['classification', 'integrationType', 'partnershipType', 'category'],
   },
 
   // ============================================================
@@ -363,6 +423,9 @@ export const partners: Partner[] = [
     contactName: 'Priya Sharma',
     contactEmail: 'priya@smartestimate.ai',
     notes: 'Controlled — estimating features overlap with HCP quoting. Scoped integration approved by strategy team.',
+    category: 'AI',
+    airtableStatus: 'Pilot',
+    enrichedFields: ['classification', 'integrationType', 'partnershipType', 'category'],
   },
   {
     id: 'p-22',
@@ -380,6 +443,9 @@ export const partners: Partner[] = [
     contactName: 'David Park',
     contactEmail: 'david@fleetworks.co',
     notes: 'Controlled due to dispatch-adjacent features. Webhook-only scope approved.',
+    category: 'Fleet Management',
+    airtableStatus: 'Pilot',
+    enrichedFields: ['classification', 'integrationType', 'partnershipType', 'category'],
   },
   {
     id: 'p-23',
@@ -396,6 +462,9 @@ export const partners: Partner[] = [
     whyIntegrate: 'Contractors need current material prices when building estimates. Eliminates manual price checking.',
     contactName: 'Olivia Dunn',
     contactEmail: 'olivia@materialsync.com',
+    category: 'Pricebook',
+    airtableStatus: 'Pilot',
+    enrichedFields: ['classification', 'integrationType', 'partnershipType', 'category'],
   },
 
   // ============================================================
@@ -417,6 +486,9 @@ export const partners: Partner[] = [
     contactName: 'Greg Lawson',
     contactEmail: 'greg@fieldroutepro.com',
     notes: 'Core Conflict — directly competitive FSM platform. Declined immediately.',
+    category: 'Business Ops & Growth',
+    airtableStatus: 'Not Moving Forward',
+    enrichedFields: ['classification', 'integrationType', 'partnershipType', 'category'],
   },
   {
     id: 'p-25',
@@ -432,6 +504,9 @@ export const partners: Partner[] = [
     integrationRequest: 'OAuth-based customer and schedule sharing',
     whyIntegrate: 'Claims to serve a different market segment. Wants interoperability for shared customers.',
     notes: 'Core Conflict — full-stack competitor. No meeting scheduled.',
+    category: 'Communication',
+    airtableStatus: 'Not Moving Forward',
+    enrichedFields: ['classification', 'integrationType', 'partnershipType', 'category'],
   },
   {
     id: 'p-26',
@@ -447,6 +522,9 @@ export const partners: Partner[] = [
     integrationRequest: 'Embedded booking widget with customer record sync',
     whyIntegrate: 'Wants to be the customer-facing booking layer while HCP handles back-office.',
     notes: 'Core Conflict — booking and customer management are core HCP features.',
+    category: 'Booking',
+    airtableStatus: 'Not Moving Forward',
+    enrichedFields: ['classification', 'integrationType', 'partnershipType', 'category'],
   },
   {
     id: 'p-27',
@@ -462,6 +540,9 @@ export const partners: Partner[] = [
     integrationRequest: 'Customer and invoice data API sync',
     whyIntegrate: 'Targets the same SMB trades market. Wants to share customer and invoice data.',
     notes: 'Core Conflict — CRM + invoicing directly competitive.',
+    category: 'CRM',
+    airtableStatus: 'Not Moving Forward',
+    enrichedFields: ['classification', 'integrationType', 'partnershipType', 'category'],
   },
   {
     id: 'p-28',
@@ -477,6 +558,9 @@ export const partners: Partner[] = [
     integrationRequest: 'Dispatch API to override HCP\'s native scheduling with AI-optimized routes',
     whyIntegrate: 'Claims 30% efficiency gain over manual dispatch. Wants to replace HCP\'s built-in dispatch logic.',
     notes: 'Core Conflict — wants to replace core dispatch functionality.',
+    category: 'Route Optimization',
+    airtableStatus: 'Not Moving Forward',
+    enrichedFields: ['classification', 'integrationType', 'partnershipType', 'category'],
   },
   {
     id: 'p-29',
@@ -492,6 +576,9 @@ export const partners: Partner[] = [
     integrationRequest: 'Bi-directional schedule and time tracking sync',
     whyIntegrate: 'Targets labor-intensive service companies. Wants HCP job data to feed crew scheduling.',
     notes: 'Core Conflict — scheduling and workforce management overlap.',
+    category: 'Time Tracking',
+    airtableStatus: 'Not Moving Forward',
+    enrichedFields: ['classification', 'integrationType', 'partnershipType', 'category'],
   },
   {
     id: 'p-30',
@@ -507,6 +594,9 @@ export const partners: Partner[] = [
     integrationRequest: 'White-labeled job management module for HCP marketplace',
     whyIntegrate: 'Wants to offer a simplified job management tool within HCP for solo contractors.',
     notes: 'Core Conflict — job management is HCP\'s primary product.',
+    category: 'Productivity',
+    airtableStatus: 'Not Moving Forward',
+    enrichedFields: ['classification', 'integrationType', 'partnershipType', 'category'],
   },
   {
     id: 'p-31',
@@ -522,6 +612,9 @@ export const partners: Partner[] = [
     integrationRequest: 'Equipment status webhooks tied to job requirements',
     whyIntegrate: 'Wants jobs to auto-check whether required equipment is available and operational.',
     notes: 'Controlled — some scheduling overlap. Declined due to insufficient business case and low mutual customer overlap.',
+    category: 'Fleet Management',
+    airtableStatus: 'Not Moving Forward',
+    enrichedFields: ['classification', 'integrationType', 'partnershipType', 'category'],
   },
   {
     id: 'p-32',
@@ -537,6 +630,9 @@ export const partners: Partner[] = [
     integrationRequest: 'Property enrichment API to auto-populate job records with home details',
     whyIntegrate: 'Technicians arrive better prepared when property details are pre-loaded. Fewer callbacks.',
     notes: 'Open classification but declined — pricing model incompatible with HCP\'s unit economics.',
+    category: 'Intake',
+    airtableStatus: 'Not Moving Forward',
+    enrichedFields: ['classification', 'integrationType', 'partnershipType', 'category'],
   },
   {
     id: 'p-33',
@@ -552,6 +648,9 @@ export const partners: Partner[] = [
     integrationRequest: 'Weather event webhooks to trigger schedule adjustments',
     whyIntegrate: 'Outdoor service companies lose revenue from weather cancellations. Proactive rescheduling reduces losses.',
     notes: 'Open but declined — too early stage, insufficient reliability for production use.',
+    category: 'Automation',
+    airtableStatus: 'Not Moving Forward',
+    enrichedFields: ['classification', 'integrationType', 'partnershipType', 'category'],
   },
   {
     id: 'p-34',
@@ -567,6 +666,9 @@ export const partners: Partner[] = [
     integrationRequest: 'Quote-to-job conversion via OAuth-authenticated API',
     whyIntegrate: 'Contractors using QuoteWizard want approved quotes to automatically create jobs in HCP.',
     notes: 'Controlled — quoting overlaps with HCP estimates. Declined in favor of SmartEstimate partnership.',
+    category: 'Pricebook',
+    airtableStatus: 'Not Moving Forward',
+    enrichedFields: ['classification', 'integrationType', 'partnershipType', 'category'],
   },
   {
     id: 'p-35',
@@ -582,5 +684,8 @@ export const partners: Partner[] = [
     integrationRequest: 'Embedded signature capture within job completion flow',
     whyIntegrate: 'Contractors need signed work orders for liability. Wants to embed signature capture in HCP.',
     notes: 'Controlled — HCP has native signature capture. Declined due to feature overlap.',
+    category: 'Checklists/Forms',
+    airtableStatus: 'Not Moving Forward',
+    enrichedFields: ['classification', 'integrationType', 'partnershipType', 'category'],
   },
 ];
