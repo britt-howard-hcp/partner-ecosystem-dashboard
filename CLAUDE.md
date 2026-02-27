@@ -6,178 +6,163 @@ Britt Howard, Senior Manager of Platform Partnerships at Housecall Pro (HCP). He
 
 ## What This Project Is
 
-A React/Vite dashboard deployed on Vercel that visualizes HCP's partner ecosystem as a market intelligence tool. It connects to Airtable as its data source and will eventually integrate the Claude API for AI-powered enrichment and natural language queries.
+A React/Vite dashboard deployed on Vercel that visualizes HCP's partner ecosystem as a market intelligence tool. It connects to Airtable as its data source and will integrate the Claude API for AI-powered enrichment and natural language queries ("Ask the Ecosystem").
+
+This dashboard is Module 5 of a larger agentic ecosystem system. The full system vision includes: Smart Intake & Triage (Slack decision loop), Meeting Prep Package (auto-generated Google Docs), Post-Meeting Enrichment (Granola notes → Airtable), Market Intelligence & Reporting (Google Slides decks, Slack queries), and this Dashboard.
 
 Live URL: https://partner-ecosystem-dashboard.vercel.app/
 Auto-deploys from this GitHub repo's main branch.
 
-## Current State (as of February 2026)
+## Current State (as of late February 2026)
 
-The dashboard was built in four commits:
+The dashboard has been through a full redesign cycle across 10 commits:
+
 1. Initial Vite/React scaffold with fake data
 2. Major restructure to HCP terminology, dark theme, classification framework, pipeline kanban
-3. Phase 2: Airtable connection via Vercel serverless proxy, classification-overrides enrichment layer, real partner data
+3. Airtable connection via Vercel serverless proxy, classification-overrides enrichment layer, real partner data
 4. Field mapping fix (Company name → App, Date → Added)
+5. CLAUDE.md and dashboard design review added
+6. **Phase 1A:** Layout redesign — pipeline kanban demoted, market intelligence-first layout, partner table as primary view, KPI bar, Market Pulse charts, narrative block
+7. CLAUDE.md updated with Phase 1A results and Phase 1B scope
+8. **Phase 1B:** Category intelligence — category chart, clickable KPIs, status/category filter dropdowns, chart click-to-drill, tooltip fixes
+9. CLAUDE.md updated with Phase 1B results and 1B-fix scope
+10. **Phase 1B-fix:** Multi-select category data model fix, KPI bar reorder/relabel, Market Pulse chart layout, filter consolidation, list-to-profile drill-down
 
-The Airtable connection is live. Real partner data flows through. Legacy partners (Yelp, Angi, Google, Thumbtack, Bluon, etc.) have been backfilled into Airtable as Live.
+**All Phase 1 work is complete.** The dashboard is a functional market intelligence tool with:
+- Full-width layout (sidebar/chat removed)
+- KPI bar: Ecosystem Requests → Live Integrations → In Pipeline → Controlled Requests → Browse Categories
+- Consolidated filter bar: search, date range, classification, integration type, status (real Airtable stages), category (multi-select tags)
+- Market Pulse: Category Distribution (left, large), Pipeline Stages (top-right), Classifications (bottom-right)
+- Auto-generated analyst narrative
+- Sortable/filterable partner table (Ecosystem Directory) as the primary view
+- Slide-out detail panel with drill-down from any list view
+- Multi-select category handling throughout (data model, charts, filters, table, detail panel)
 
-**Phase 1A is complete.** The layout has been restructured from pipeline-first to market intelligence-first: sidebar/chat removed, full-width layout, partner table as primary view, status distribution chart replacing the redundant classification bar chart, KPI cards updated, data model extended with `category`, `airtableStatus`, and `enrichedFields`.
+**Known cosmetic issues (to fix in Phase 2):**
+- Chart hover states show full-width white/gray background instead of contained highlight
+- Minor spacing/clipping on some chart elements
+- Terminology inconsistencies may remain in some tooltips or edge cases
 
-**What needs to happen now:** Phase 1A cleanup (bugs from initial implementation) + Phase 1B (category intelligence and interactivity). See the full design review at `docs/dashboard-design-review.md`.
+**What needs to happen now:** Phase 2 — Visual polish, AI enrichment badges, Ask the Ecosystem UI shell, pagination. See Implementation Phases below.
 
 ---
 
-## The Design Problem (Why We're Redesigning)
-
-The dashboard was originally built around a pipeline kanban (Evaluating → Onboarding → Active → Declined). This is the wrong primary metaphor because:
-
-- Britt's role is market intelligence, not high-volume BD pipeline management
-- ~90% of records sit in "Evaluating" making the kanban one giant column and three nearly empty ones
-- The kanban collapses 9 Airtable stages into 4 dashboard statuses, losing meaningful distinctions (Unexplored vs. Initial Call vs. Discovery are all "Evaluating")
-- The dataset grows by 5+ companies/month — a kanban that's 90% one column only gets worse
-- The questions Britt and Roland actually ask are category-based ("how many CSR AI companies?", "list all marketing agencies") not stage-based
-
-## The Redesigned Layout
+## Dashboard Layout (current)
 
 ### Section 1: Header + KPI Bar
 
-Keep the header with title, subtitle, and date. Revise KPI cards:
+Header with title, subtitle, and date. Five clickable KPI cards that pre-filter the dashboard:
 
-| Card | What It Shows |
-|---|---|
-| **Ecosystem Requests** | Total count from Airtable |
-| **Live Integrations** | Count where status = Live |
-| **In Pipeline** | Count where status is between Unexplored and Signed Agreements |
-| **Categories Represented** | Distinct count of non-empty Category values |
-| **Controlled Requests** | Count of Controlled classification |
-
-KPI cards should be clickable — clicking pre-filters the entire dashboard to that segment.
+| Card | What It Shows | Position |
+|---|---|---|
+| **Ecosystem Requests** | Total count from Airtable | 1st (leftmost) |
+| **Live Integrations** | Count where status = Live | 2nd |
+| **In Pipeline** | Count where status is Unexplored through Signed Agreements | 3rd |
+| **Controlled Requests** | Count of Controlled classification | 4th |
+| **Browse Categories** | Distinct count of category tags — opens exploration view, not a filter | 5th (rightmost) |
 
 ### Section 2: Filter Bar
 
-Current filters: date range, classification, integration type, search.
-
-Add:
-- **Status filter** using real Airtable stages (Unexplored, Initial Call, Discovery, Pilot, Signed Agreements, Live, Not Moving Forward, Deactivated Partner, Hidden Partner) — not the collapsed 4
-- **Category filter** pulling distinct values from the Airtable Category field
+One consolidated row below header/KPI bar, above Market Pulse. Contains: Search input, Date range, Classification dropdown, Integration Type dropdown, Status dropdown (real Airtable stages), Category dropdown (multi-select tags).
 
 ### Section 3: Market Pulse Charts (3-panel grid)
 
-**Panel 1 — Category Distribution.** Replace the request volume area chart. Show what kinds of companies are in the ecosystem grouped by Airtable Category, sized by count. Treemap, grouped bar, or bubble chart. This directly answers "how many CSR AI companies have reached out?"
+**Left panel — Category Distribution** (spans full height of both right panels). Horizontal bar chart showing company count per category tag. Multi-select aware — each tag counted independently. "Show all" toggle for 42+ categories.
 
-**Panel 2 — Classification Breakdown.** Keep the donut/pie chart. Shows Core Conflict / Controlled / Open distribution. Clickable to open detail panel with partner list.
+**Top-right — Pipeline Stages.** Horizontal bars showing distribution across real Airtable stages.
 
-**Panel 3 — Status Distribution.** Replace the redundant classification bar chart. Show partner distribution across real Airtable pipeline stages. Horizontal bar or vertical grouped bar.
+**Bottom-right — Classifications.** Pie/donut chart showing Core Conflict / Controlled / Open distribution.
+
+All charts: hover shows readable tooltip, click opens list in detail panel, cursor pointer on interactive elements.
 
 ### Section 4: Analyst Narrative
 
-Keep the auto-generated paragraph. Update logic to reference: category trends (top category by count), selectivity rate, classification distribution, pipeline activity. Frame as market intelligence, not pipeline throughput.
+Auto-generated paragraph referencing: top category by tag count, selectivity rate, classification distribution, pipeline activity. Framed as market intelligence.
 
-### Section 5: Partner Table (NEW — primary partner view)
+### Section 5: Ecosystem Directory (partner table)
 
-A sortable, filterable table replacing the kanban as the default view. Columns:
+Sortable, filterable table. Columns: Company Name, Status (real Airtable stage), Classification, Category (pill badges for multi-select tags), Integration Type, Partnership Type, Customer Count, Mutual Customers, Request Date.
 
-| Column | Source |
-|---|---|
-| Company Name | Airtable `App` field |
-| Status | Real Airtable stage (cleaned up for display) |
-| Classification | From classification-overrides |
-| Category | Airtable Category field (fallback from overrides for empty records, display "Uncategorized" if neither exists) |
-| Integration Type | From classification-overrides |
-| Partnership Type | From classification-overrides |
-| Customer Count | Airtable, if available |
-| Mutual Customers | Airtable `Mutual Pros`, parsed |
-| Request Date | Airtable `Added` or record created date |
+Features: click row → detail panel, sort by column header, Product Partnerships get gold/amber row highlight, search works across all fields.
 
-Features:
-- Click any row → open detail panel (same slide-out)
-- Sort by any column header
-- Search works across all visible fields
-- Product Partnerships get gold/amber row highlight
-- Pagination or virtual scrolling as dataset grows past 100+
+### Section 6: Detail Panel (slide-out)
 
-### Section 6: Pipeline Kanban (optional secondary view)
-
-Demote to a toggle: "Table View" (default) / "Board View." Keep existing kanban components but wire them to a view toggle. Ideally update the board to use real Airtable stages or a smarter grouping (Inbox / In Conversation / Advanced / Live / Exited).
-
-### Sidebar: Chat Panel
-
-Remove from layout entirely. Dashboard goes full-width. Chat components stay in the codebase but are not rendered. Revisit in Phase 3 when Claude API is integrated.
+Four sections: Company Overview, Integration Details, Business Case, Relationship. Supports navigation: list view → company profile → back. All category tags displayed.
 
 ---
 
-## Data Model Changes
+## Data Model
 
 ### Partner interface (`src/types/partner.ts`)
 
-Add these fields:
-- `category: string[]` — from Airtable Category multi-select field (array of tags), with override fallback. Never a single string.
-- `airtableStatus: string` — raw Airtable stage name (e.g., "Initial Call", "Live", "Not Moving Forward")
-- `enrichedFields: Set<string>` (or `string[]`) — names of fields that came from classification-overrides rather than Airtable. Used by components to render the AI enrichment badge.
+```typescript
+export interface Partner {
+  id: string;
+  name: string;
+  website?: string;
+  description?: string;
+  classification: Classification;
+  partnershipType: PartnershipType;
+  status: Status;
+  integrationType: IntegrationType;
+  requestDate?: string;
+  customerCount?: number;
+  integrationRequest?: string;
+  whyIntegrate?: string;
+  mutualCustomers?: number;
+  contactName?: string;
+  contactEmail?: string;
+  notes?: string;
+  category: string[];       // MULTI-SELECT — always an array, never a string
+  airtableStatus: string;   // Raw Airtable stage name
+  enrichedFields: string[]; // Field names that came from overrides, not Airtable
+}
+```
 
-The existing `status` field (the collapsed 4-value type) can be kept for backward compatibility with chart-service and other code that groups by broad status, but `airtableStatus` is what the table and status filter use.
+### Category: MULTI-SELECT TAGS
 
-### Classification overrides (`src/data/classification-overrides.ts`)
+The Airtable Category field is a multi-select field. Each company can have 1-3 category tags. The API returns these as an array.
 
-Add `category` to the `PartnerOverride` interface as an optional fallback. Only used when the Airtable Category field is empty for a given record. Populate from the existing inline comments.
+Rules:
+- `category` on Partner is always `string[]`
+- Charts count each tag independently (company with ["AI", "CSR AI"] = 1 for AI + 1 for CSR AI)
+- Filtering by "AI" returns all companies with "AI" in their tags array
+- Never show combined strings like "AI, CSR AI" as a single chart entry
+- Empty category arrays display as ["Uncategorized"]
 
-### Airtable service (`src/services/airtable-partner-service.ts`)
-
-Update `mapRecord` to:
-- Pull the `Category` field from Airtable
-- Store the raw Airtable status in `airtableStatus`
-- Track which fields came from overrides vs. Airtable in `enrichedFields`
-- Use override `category` as fallback only when Airtable Category is empty
-
-### Airtable API route (`api/partners.ts`)
-
-No changes needed — it already returns all fields.
-
----
-
-## AI Enrichment Badge
-
-Any field value that came from classification-overrides rather than directly from Airtable should display an inline badge with an AI sparkle icon. This is visible at a glance (not hover-only). Tooltip on hover says "AI-estimated based on company profile" or similar.
-
-This applies now to fields from the overrides file (classification, integration type, partnership type, category fallback). In Phase 3 when Claude API enrichment is added, the same badge component is reused for AI-generated values.
-
-Create a reusable `<EnrichedBadge />` component.
-
----
-
-## Airtable Category Taxonomy
-
-### CRITICAL: Categories are MULTI-SELECT TAGS, not single values
-
-The Airtable Category field is a **multi-select field**. Each company can have 1-3 category tags. The Airtable API returns these as an **array** (e.g., `["AI", "CSR AI", "Business Ops & Growth"]`).
-
-This means:
-- The `category` field on the Partner interface must be `string[]` (array), not `string`
-- Chart counts must count each tag independently — a company tagged ["AI", "CSR AI"] counts as 1 toward AI and 1 toward CSR AI, NOT as 1 toward "AI, CSR AI"
-- Filtering by category "AI" must return ALL companies that have "AI" as ANY of their tags
-- The category chart should never show combined tag strings like "AI, CSR AI" as a category — break them apart
-
-### Two meta-categories (important context)
+### Two meta-categories
 
 Britt applies two broad bucket tags across most companies:
-- **Business Ops & Growth** — companies that help pros run/grow their business (marketing, reviews, financing, payroll, etc.)
-- **Trade Tools** — companies specific to the trades (HVAC diagnostics, fleet management, pricebooks, etc.)
+- **Business Ops & Growth** — companies that help pros run/grow their business
+- **Trade Tools** — companies specific to the trades
 
-Most companies get one of these PLUS their specific category (e.g., ["CSR AI", "Business Ops & Growth"]). This is by design — it allows slicing the data both by specific function and by broad strategic bucket.
+Most companies get one of these PLUS their specific category (e.g., ["CSR AI", "Business Ops & Growth"]).
 
 ### All known category tag values
 
 Aggregator, Booking, Call/VOIP, CRM, Finance, Marketing, Productivity, Reviews, Automation, Websites, Checklists/Forms, Time Tracking, Calendar, Postcards, Email, Payroll, Funding, Financing, Payments, Gift Cards, Accounting, Fintech, Service, GPS, Intake, Services, Agency, Pricebook, Visual/AR, Chat, Communication, Lead Gen, Inventory Management, Job Inbox, Insurance, Insurance Exchange, Answering Service, Licensing/verification, Background Checks, Franchise, Route Optimization, Reporting, AI, CSR AI, Fleet Management, Trade Tools, Lead Catcher, Distributor, Purchasing, Last Mile Delivery, Performance Pay, Business Ops & Growth, Smart Thermostat
 
-**Data quality rules on ingest:**
-- Normalize "insurane" → "Insurance" (typo in Airtable)
-- Normalize "Not Moving forward" → "Not Moving Forward" (case consistency on status)
-- Keep "Service" / "Services" as-is for now (known near-duplicate, Britt will consolidate later)
+### Data quality rules on ingest
+- Normalize "insurane" → "Insurance"
+- Normalize "Not Moving forward" → "Not Moving Forward"
+- Keep "Service" / "Services" as-is (known near-duplicate, Britt will consolidate later)
 - Display empty category array as ["Uncategorized"]
+
+### Classification overrides (`src/data/classification-overrides.ts`)
+
+Enrichment layer for 67+ partners. Provides classification, integration type, partnership type, and category fallback for records where Airtable fields don't exist yet. The overrides file is designed to shrink over time as Airtable fields get populated.
+
+### Airtable service (`src/services/airtable-partner-service.ts`)
+
+Maps Airtable records to Partner interface. Handles: multi-select category arrays, raw Airtable status passthrough, override fallbacks, enrichedFields tracking, messy data normalization.
+
+### Airtable proxy (`api/partners.ts`)
+
+Vercel serverless function. Paginates through Airtable API. Server-side filter: `NOT({Status}='')`. Uses env vars: `AIRTABLE_PAT`, `AIRTABLE_BASE_ID`, `AIRTABLE_TABLE_NAME`. 60-second cache with stale-while-revalidate. No changes needed — it already returns all fields.
 
 ---
 
-## Ecosystem Strategy Framework (reference)
+## Ecosystem Strategy Framework
 
 ### Two Partnership Tiers
 - **Product Partnerships** (1-2/year, exception not rule) — HCP builds or co-builds the integration. Gold/amber badge and visual treatment everywhere.
@@ -215,71 +200,56 @@ Unexplored → Initial Call → Discovery → Pilot → Signed Agreements → Li
 
 ## Implementation Phases
 
-### Phase 1A — Layout Restructure + Data Layer ✅ COMPLETE (with known issues)
-- ✅ Remove sidebar/chat, go full-width
-- ✅ Pull Category field from Airtable API into Partner data model
-- ✅ Add `airtableStatus` and `enrichedFields` to Partner interface
-- ✅ Add category fallback to classification-overrides
-- ✅ Build `PartnerTable.tsx` as primary view with sortable columns
-- ✅ Replace redundant classification bar chart with status distribution chart
-- ✅ Update KPI cards to new metrics
+### Phase 1A — Layout Restructure + Data Layer ✅ COMPLETE
+- Remove sidebar/chat, go full-width
+- Pull Category field from Airtable API into Partner data model
+- Add `airtableStatus` and `enrichedFields` to Partner interface
+- Add category fallback to classification-overrides
+- Build `PartnerTable.tsx` as primary view with sortable columns
+- Replace redundant classification bar chart with status distribution chart
+- Update KPI cards to new metrics
 
-**Known issues from 1A that need fixing:**
-- KPI cards are NOT clickable yet — clicking should pre-filter the dashboard
-- Status distribution chart bars are NOT clickable — clicking a stage should open a detail panel with the list of companies in that stage (same behavior as classification pie chart)
-- Tooltip text on classification pie chart is dark-on-dark and unreadable — needs light text
-- Tooltip text on status distribution chart has the same dark-on-dark readability issue
-- Status distribution chart: stage labels and company counts have inconsistent contrast (some white, some dark)
-- Classification pie chart and status distribution chart don't have matching interaction patterns — both should: hover shows readable tooltip, click opens detail panel with filtered company list
+### Phase 1B — Category Intelligence + Interactivity ✅ COMPLETE
+- Clickable KPIs, category chart, status/category filter dropdowns
+- Chart click-to-drill, tooltip fixes
+- Category and status filters with real Airtable values
 
-### Phase 1B — Category Intelligence + Interactivity Fixes ✅ COMPLETE (with known issues from testing)
+### Phase 1B-fix — Multi-Select + Polish ✅ COMPLETE
+- Fixed category data model (multi-select array handling throughout)
+- KPI bar reordered and relabeled (Browse Categories)
+- Market Pulse chart layout balanced
+- Filters consolidated to one row
+- List-to-profile drill-down in detail panel
 
-Phase 1B delivered: clickable KPIs, category chart, status/category filters, fixed tooltips, chart click-to-drill.
-
-**Known issues from 1B testing that need fixing:**
-
-KPI Bar:
-- Reorder KPI cards: Ecosystem Requests → Live Integrations → In Pipeline → Controlled Requests → "Categories Represented" (move to far right)
-- "Categories Represented" label is confusing — the other 4 cards are filters that narrow the data, this one opens a list. Consider relabeling to "Browse All Categories" or "Category Directory" or similar — something that signals "click here to explore" rather than being a filter
-- When clicking into a list view from any KPI card or chart segment, clicking a company name in that list should open the company's full detail panel (drill-down from list → profile)
-
-Category Data Model (CRITICAL FIX):
-- Category is a MULTI-SELECT field in Airtable — comes back as an array, not a string
-- The `category` field on Partner must be `string[]`
-- Category chart must count each tag independently (company tagged ["AI", "CSR AI"] = 1 count for AI + 1 count for CSR AI)
-- Category filter must match any tag (filtering "AI" returns all companies with "AI" in their tags array)
-- Category chart should NEVER show combined strings like "AI, CSR AI" as a bar — each tag gets its own bar
-- See "Airtable Category Taxonomy" section for full details on the multi-select model
-
-Market Pulse Layout:
-- Category distribution chart and the two right-side charts (pipeline stages, classifications) have uneven sizing — there's an awkward gap under classifications
-- The two right-side charts should be equal height and stack cleanly — no whitespace gap between them
-- Category distribution (left) should be the same total height as both right-side charts stacked together
-
-Filter/Search Consolidation:
-- Search bar and all filter dropdowns (date, classification, integration type, status, category) should live on ONE row at the top of the dashboard, above Market Pulse
-- The "Ecosystem Directory" heading should sit above the partner table with the search/filters integrated there or in the global filter bar — not as a separate section with its own search
-
-### Phase 1B-fix — Current Issues ← CURRENT
-- Fix category data model (multi-select array handling)
-- Fix KPI bar order and labeling
-- Fix Market Pulse chart layout/sizing
-- Consolidate filters into one row
-- Add drill-down from list views to company detail panels
-- See prompt for full details
-
-### Phase 1C — View Toggle + Polish
-- Add Table/Board view toggle
-- Update kanban to use real Airtable stages or smarter grouping
+### Phase 2 — Visual Polish + AI Foundation ← CURRENT
+See Phase 2 prompt for full details. Summary:
+- Fix chart hover states (white/gray background on bar hover)
+- Fix spacing/clipping on chart elements
+- Build `EnrichedBadge` component (AI sparkle icon + tooltip) — pure visual indicator for fields from overrides
+- Apply EnrichedBadge to all override-sourced fields in table and detail panel
+- Build "Ask the Ecosystem" UI shell — floating action button as primary entry point, slide-out chat panel with placeholder state ("Claude API coming in Phase 3")
+- Add pagination to Ecosystem Directory table
 - Final terminology pass across all components
-- Sort controls on table columns
-- Pagination or virtual scroll for growing dataset
+- Update narrative block if needed
 
-### Phase 3 Hook — Design Now, Build Later
-- Create `EnrichedBadge` component (AI sparkle icon + tooltip)
-- Apply to any field where data came from classification-overrides
-- Reserve entry point for "Enrich this record" in detail panel
-- CSS/component prep only — no Claude API calls until Phase 3
+### Phase 3 — Claude API Integration (next)
+- Wire Claude API (`claude-sonnet-4-6`) to Ask the Ecosystem chat panel
+- Give Claude access to partner dataset as context
+- AI-powered record enrichment — Claude fills sparse fields (category, description, integration assessment)
+- Dynamic narrative block that reasons about the data
+- EnrichedBadge reused for AI-generated values (same component, new source)
+- "Enrich this record" action in detail panel
+
+### Phase 4 — Agentic Modules (future)
+- Module 1: Smart Intake & Triage — form → Claude classifies → Slack notification → emoji reaction → auto-email → Airtable update
+- Module 2: Meeting Prep Package — auto-generated Google Doc with partner info and prep brief
+- Module 3: Post-Meeting Enrichment — Granola notes → Claude extracts structured data → Airtable
+- Module 4A: One-click Google Slides ecosystem deck
+- Module 4B: Natural language Slack query layer
+
+### Dropped from scope
+- ~~Table/Board view toggle~~ — kanban is the wrong metaphor for this data. If needed later, it's a one-prompt add.
+- ~~Kanban with real Airtable stages~~ — same reason. Table view is the primary and only view.
 
 ---
 
@@ -292,6 +262,8 @@ Filter/Search Consolidation:
 - Global search with autocomplete
 - Airtable serverless proxy architecture (`api/partners.ts`)
 - Classification-overrides enrichment pattern
+- Multi-select category handling (arrays throughout the entire data flow)
+- KPI card order: Ecosystem Requests → Live Integrations → In Pipeline → Controlled Requests → Browse Categories
 
 ## Execution Rules
 
@@ -300,4 +272,4 @@ Filter/Search Consolidation:
 - Keep all API keys in environment variables, never hardcoded
 - Dashboard is read-only — no write operations to Airtable from the frontend
 - When in doubt on terminology, refer to the terminology table above
-- Read `docs/dashboard-design-review.md` for the full reasoning behind these decisions
+- Read `docs/dashboard-design-review.md` for the full reasoning behind design decisions
