@@ -55,6 +55,7 @@ export function CategoryDistribution() {
                     tickLine={false}
                   />
                   <Tooltip
+                    cursor={{ fill: 'transparent' }}
                     contentStyle={{
                       backgroundColor: '#161822',
                       border: '1px solid #2e3348',

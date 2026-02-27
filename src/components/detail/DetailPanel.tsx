@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { useDetailPanel } from '../../hooks/useDetailPanel';
 import { Badge } from '../common/Badge';
+import { EnrichedBadge } from '../common/EnrichedBadge';
 import { getClassificationColor } from '../../services';
 import type { Partner, Classification } from '../../types/partner';
 
@@ -53,17 +54,24 @@ function PartnerProfile({ partner }: { partner: Partner }) {
         )}
         <div className="grid grid-cols-2 gap-3">
           <Field label="Classification">
-            <Badge label={partner.classification} variant="classification" />
+            <span className="inline-flex items-center">
+              <Badge label={partner.classification} variant="classification" />
+              <EnrichedBadge field="classification" enrichedFields={partner.enrichedFields} />
+            </span>
           </Field>
           <Field label="Partnership Type">
-            <Badge label={partner.partnershipType} variant="partnership" />
+            <span className="inline-flex items-center">
+              <Badge label={partner.partnershipType} variant="partnership" />
+              <EnrichedBadge field="partnershipType" enrichedFields={partner.enrichedFields} />
+            </span>
           </Field>
           {partner.category.some((t) => t !== 'Uncategorized') && (
             <Field label="Category">
-              <div className="flex flex-wrap gap-1">
+              <div className="flex flex-wrap gap-1 items-center">
                 {partner.category.filter((t) => t !== 'Uncategorized').map((tag) => (
                   <span key={tag} className="text-xs bg-surface-700 text-text-secondary rounded px-1.5 py-0.5">{tag}</span>
                 ))}
+                <EnrichedBadge field="category" enrichedFields={partner.enrichedFields} />
               </div>
             </Field>
           )}
@@ -87,7 +95,10 @@ function PartnerProfile({ partner }: { partner: Partner }) {
             <Badge label={partner.status} variant="status" />
           </Field>
           <Field label="Integration Type">
-            <span className="text-sm text-text-primary">{partner.integrationType}</span>
+            <span className="inline-flex items-center text-sm text-text-primary">
+              {partner.integrationType}
+              <EnrichedBadge field="integrationType" enrichedFields={partner.enrichedFields} />
+            </span>
           </Field>
           {partner.requestDate && (
             <Field label="Request Date">

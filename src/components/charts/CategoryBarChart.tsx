@@ -45,6 +45,7 @@ export function CategoryBarChart() {
                 tickLine={false}
               />
               <Tooltip
+                cursor={{ fill: 'transparent' }}
                 contentStyle={{
                   backgroundColor: '#161822',
                   border: '1px solid #2e3348',
@@ -52,10 +53,12 @@ export function CategoryBarChart() {
                   color: '#f1f5f9',
                   fontSize: 12,
                 }}
+                itemStyle={{ color: '#f1f5f9' }}
+                labelStyle={{ color: '#cbd5e1' }}
               />
               <Bar
                 dataKey="count"
-                name="Partners"
+                name="Companies"
                 radius={[0, 4, 4, 0]}
                 className="cursor-pointer"
                 onClick={(_data, index) => handleClick(classificationVolumeData[index].classification)}
