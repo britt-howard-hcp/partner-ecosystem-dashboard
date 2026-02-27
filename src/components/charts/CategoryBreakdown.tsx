@@ -17,11 +17,11 @@ export function CategoryBreakdown() {
   }
 
   return (
-    <div>
+    <div className="h-full flex flex-col">
       <h3 className="text-sm font-semibold text-text-secondary uppercase tracking-wider mb-3">
         Classifications
       </h3>
-      <div className="bg-surface-800 rounded-lg p-4 border border-border h-[320px]">
+      <div className="bg-surface-800 rounded-lg p-4 border border-border flex-1 min-h-[160px]">
         {!hasData ? (
           <p className="text-sm text-text-muted italic flex items-center justify-center h-full">
             No data for selected filters

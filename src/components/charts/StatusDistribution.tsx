@@ -15,17 +15,17 @@ export function StatusDistribution() {
   }
 
   return (
-    <div>
+    <div className="h-full flex flex-col">
       <h3 className="text-sm font-semibold text-text-secondary uppercase tracking-wider mb-3">
         Pipeline Stages
       </h3>
-      <div className="bg-surface-800 rounded-lg p-4 border border-border h-full min-h-[160px]">
+      <div className="bg-surface-800 rounded-lg p-4 border border-border flex-1 flex flex-col min-h-[160px]">
         {!hasData ? (
-          <p className="text-sm text-text-muted italic flex items-center justify-center h-full">
+          <p className="text-sm text-text-muted italic flex items-center justify-center flex-1">
             No data for selected filters
           </p>
         ) : (
-          <ResponsiveContainer width="100%" height={Math.max(160, statusDistributionData.length * 32 + 30)}>
+          <ResponsiveContainer width="100%" height="100%">
             <BarChart data={statusDistributionData} layout="vertical" margin={{ left: 10, right: 20 }}>
               <XAxis
                 type="number"

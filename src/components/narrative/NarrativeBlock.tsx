@@ -16,7 +16,7 @@ export function NarrativeBlock() {
     const topCat = categoryDistributionData[0];
     if (topCat && topCat.count > 0 && topCat.category !== 'Uncategorized') {
       sentences.push(
-        `${topCat.category} leads inbound interest with ${topCat.count} compan${topCat.count === 1 ? 'y' : 'ies'}.`,
+        `${topCat.category} leads inbound interest with ${topCat.count} compan${topCat.count === 1 ? 'y' : 'ies'} tagged.`,
       );
     }
 

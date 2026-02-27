@@ -39,8 +39,8 @@ export function usePartners() {
   const categoriesRepresentedCount = useMemo(() => {
     const cats = new Set<string>();
     for (const p of state.filteredPartners) {
-      if (p.category && p.category !== 'Uncategorized') {
-        cats.add(p.category);
+      for (const tag of p.category) {
+        if (tag !== 'Uncategorized') cats.add(tag);
       }
     }
     return cats.size;

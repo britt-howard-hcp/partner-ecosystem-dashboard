@@ -38,7 +38,7 @@ function getSortValue(p: Partner, key: SortKey): string | number {
     case 'classification':
       return p.classification.toLowerCase();
     case 'category':
-      return (p.category ?? '').toLowerCase();
+      return (p.category[0] ?? '').toLowerCase();
     case 'integrationType':
       return p.integrationType.toLowerCase();
     case 'partnershipType':
@@ -147,8 +147,14 @@ export function PartnerTable() {
                     <td className="px-3 py-2.5">
                       <Badge label={p.classification} variant="classification" />
                     </td>
-                    <td className="px-3 py-2.5 text-text-secondary whitespace-nowrap">
-                      {p.category || '\u2014'}
+                    <td className="px-3 py-2.5 text-text-secondary">
+                      {p.category.filter((t) => t !== 'Uncategorized').length > 0 ? (
+                        <div className="flex flex-wrap gap-1">
+                          {p.category.filter((t) => t !== 'Uncategorized').map((tag) => (
+                            <span key={tag} className="text-xs bg-surface-700 rounded px-1.5 py-0.5 whitespace-nowrap">{tag}</span>
+                          ))}
+                        </div>
+                      ) : '\u2014'}
                     </td>
                     <td className="px-3 py-2.5 text-text-secondary whitespace-nowrap">
                       {p.integrationType}

@@ -63,18 +63,21 @@ function mapRecord(record: AirtableRecord): Partner {
   const rawStatus = normalizeStatus(str(f['Status']));
   const dashboardStatus = mapStatus(rawStatus) as Status;
 
-  // Category: Airtable is primary, override is fallback, "Uncategorized" is last resort
-  const airtableCategory = str(f['Category']);
-  const normalizedCategory = airtableCategory ? normalizeCategory(airtableCategory) : '';
-  const category = normalizedCategory || override.category || 'Uncategorized';
+  // Category: Airtable multi-select returns an array. Override fallback is a single string wrapped in [].
+  const rawCategory = f['Category'];
+  let category: string[];
+  const enrichedFields: string[] = ['classification', 'integrationType', 'partnershipType'];
 
-  // Track which fields came from overrides rather than Airtable
-  const enrichedFields: string[] = [];
-  enrichedFields.push('classification');
-  enrichedFields.push('integrationType');
-  enrichedFields.push('partnershipType');
-  if (!normalizedCategory && override.category) {
+  if (Array.isArray(rawCategory) && rawCategory.length > 0) {
+    category = rawCategory.map((tag: unknown) => normalizeCategory(String(tag).trim())).filter(Boolean);
+  } else if (typeof rawCategory === 'string' && rawCategory.trim()) {
+    // Shouldn't happen for multi-select but handle gracefully
+    category = [normalizeCategory(rawCategory.trim())];
+  } else if (override.category) {
+    category = [override.category];
     enrichedFields.push('category');
+  } else {
+    category = ['Uncategorized'];
   }
 
   return {

@@ -9,7 +9,9 @@ export function CategoryDropdown() {
   const categories = useMemo(() => {
     const set = new Set<string>();
     for (const p of state.allPartners) {
-      set.add(p.category || 'Uncategorized');
+      for (const tag of p.category) {
+        set.add(tag);
+      }
     }
     return Array.from(set).sort((a, b) => a.localeCompare(b));
   }, [state.allPartners]);

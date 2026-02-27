@@ -46,21 +46,21 @@ export function Header() {
           onClick={() => setFilters({ airtableStatus: '__pipeline__' })}
         />
         <StatCard
-          label="Categories Represented"
-          value={categoriesRepresentedCount}
-          borderColor="border-accent-400"
-          onClick={() => {
-            openList(
-              `${categoriesRepresentedCount} Categories`,
-              state.filteredPartners.filter((p) => p.category && p.category !== 'Uncategorized'),
-            );
-          }}
-        />
-        <StatCard
           label="Controlled Requests"
           value={controlledCount}
           borderColor="border-cls-controlled"
           onClick={() => setFilters({ classification: 'Controlled' })}
+        />
+        <StatCard
+          label="Browse Categories"
+          value={categoriesRepresentedCount}
+          borderColor="border-accent-400"
+          onClick={() => {
+            openList(
+              `${categoriesRepresentedCount} Category Tags`,
+              state.filteredPartners.filter((p) => p.category.some((t) => t !== 'Uncategorized')),
+            );
+          }}
         />
       </div>
     </header>

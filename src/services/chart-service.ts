@@ -93,8 +93,10 @@ export interface CategoryDistributionDataPoint {
 export function buildCategoryDistributionData(partners: Partner[]): CategoryDistributionDataPoint[] {
   const counts = new Map<string, number>();
   for (const p of partners) {
-    const cat = p.category || 'Uncategorized';
-    counts.set(cat, (counts.get(cat) ?? 0) + 1);
+    const tags = p.category.length > 0 ? p.category : ['Uncategorized'];
+    for (const tag of tags) {
+      counts.set(tag, (counts.get(tag) ?? 0) + 1);
+    }
   }
   return Array.from(counts.entries())
     .map(([category, count]) => ({ category, count }))

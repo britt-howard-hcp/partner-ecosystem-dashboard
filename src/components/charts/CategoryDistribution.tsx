@@ -19,68 +19,67 @@ export function CategoryDistribution() {
 
   function handleClick(category: string) {
     const partners = state.filteredPartners.filter(
-      (p) => (p.category || 'Uncategorized') === category,
+      (p) => p.category.includes(category) || (p.category.length === 0 && category === 'Uncategorized'),
     );
     openList(category, partners);
   }
 
-  // Dynamic height: 28px per bar + 40px for axes/margins
-  const chartHeight = Math.max(200, visibleData.length * 28 + 40);
-
   return (
-    <div>
+    <div className="h-full flex flex-col">
       <h3 className="text-sm font-semibold text-text-secondary uppercase tracking-wider mb-3">
         Category Distribution
       </h3>
-      <div className="bg-surface-800 rounded-lg p-4 border border-border">
+      <div className="bg-surface-800 rounded-lg p-4 border border-border flex-1 flex flex-col">
         {!hasData ? (
-          <p className="text-sm text-text-muted italic flex items-center justify-center h-[200px]">
+          <p className="text-sm text-text-muted italic flex items-center justify-center flex-1">
             No data for selected filters
           </p>
         ) : (
           <>
-            <ResponsiveContainer width="100%" height={chartHeight}>
-              <BarChart data={visibleData} layout="vertical" margin={{ left: 10, right: 20, top: 0, bottom: 0 }}>
-                <XAxis
-                  type="number"
-                  allowDecimals={false}
-                  tick={{ fill: '#94a3b8', fontSize: 11 }}
-                  axisLine={{ stroke: '#2e3348' }}
-                  tickLine={false}
-                />
-                <YAxis
-                  type="category"
-                  dataKey="category"
-                  width={140}
-                  tick={{ fill: '#cbd5e1', fontSize: 11 }}
-                  axisLine={{ stroke: '#2e3348' }}
-                  tickLine={false}
-                />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: '#161822',
-                    border: '1px solid #2e3348',
-                    borderRadius: 8,
-                    color: '#f1f5f9',
-                    fontSize: 12,
-                  }}
-                  itemStyle={{ color: '#f1f5f9' }}
-                  labelStyle={{ color: '#cbd5e1' }}
-                  formatter={(value) => [value, 'Companies']}
-                />
-                <Bar
-                  dataKey="count"
-                  name="Companies"
-                  radius={[0, 4, 4, 0]}
-                  className="cursor-pointer"
-                  onClick={(_data, index) => handleClick(visibleData[index].category)}
-                >
-                  {visibleData.map((entry) => (
-                    <Cell key={entry.category} fill={BAR_COLOR} />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
+            <div className="flex-1 min-h-0">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={visibleData} layout="vertical" margin={{ left: 10, right: 20, top: 0, bottom: 0 }}>
+                  <XAxis
+                    type="number"
+                    allowDecimals={false}
+                    tick={{ fill: '#94a3b8', fontSize: 11 }}
+                    axisLine={{ stroke: '#2e3348' }}
+                    tickLine={false}
+                  />
+                  <YAxis
+                    type="category"
+                    dataKey="category"
+                    width={140}
+                    tick={{ fill: '#cbd5e1', fontSize: 11 }}
+                    axisLine={{ stroke: '#2e3348' }}
+                    tickLine={false}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: '#161822',
+                      border: '1px solid #2e3348',
+                      borderRadius: 8,
+                      color: '#f1f5f9',
+                      fontSize: 12,
+                    }}
+                    itemStyle={{ color: '#f1f5f9' }}
+                    labelStyle={{ color: '#cbd5e1' }}
+                    formatter={(value) => [value, 'Companies']}
+                  />
+                  <Bar
+                    dataKey="count"
+                    name="Companies"
+                    radius={[0, 4, 4, 0]}
+                    className="cursor-pointer"
+                    onClick={(_data, index) => handleClick(visibleData[index].category)}
+                  >
+                    {visibleData.map((entry) => (
+                      <Cell key={entry.category} fill={BAR_COLOR} />
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
             {hasMore && (
               <button
                 onClick={() => setShowAll(!showAll)}

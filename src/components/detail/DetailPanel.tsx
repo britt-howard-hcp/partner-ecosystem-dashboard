@@ -5,7 +5,7 @@ import { getClassificationColor } from '../../services';
 import type { Partner, Classification } from '../../types/partner';
 
 export function DetailPanel() {
-  const { view, isOpen, close } = useDetailPanel();
+  const { view, isOpen, close, openPartner } = useDetailPanel();
 
   if (!isOpen || !view) return null;
 
@@ -29,9 +29,9 @@ export function DetailPanel() {
           {view.kind === 'partner' ? (
             <PartnerProfile partner={view.partner} />
           ) : view.kind === 'classification' ? (
-            <ClassificationList classification={view.classification} partners={view.partners} />
+            <ClassificationList classification={view.classification} partners={view.partners} onSelectPartner={openPartner} />
           ) : (
-            <GenericList partners={view.partners} />
+            <GenericList partners={view.partners} onSelectPartner={openPartner} />
           )}
         </div>
       </div>
@@ -58,6 +58,15 @@ function PartnerProfile({ partner }: { partner: Partner }) {
           <Field label="Partnership Type">
             <Badge label={partner.partnershipType} variant="partnership" />
           </Field>
+          {partner.category.some((t) => t !== 'Uncategorized') && (
+            <Field label="Category">
+              <div className="flex flex-wrap gap-1">
+                {partner.category.filter((t) => t !== 'Uncategorized').map((tag) => (
+                  <span key={tag} className="text-xs bg-surface-700 text-text-secondary rounded px-1.5 py-0.5">{tag}</span>
+                ))}
+              </div>
+            </Field>
+          )}
           {partner.website && (
             <Field label="Website">
               <span className="text-sm text-accent-400 truncate block">{partner.website.replace(/^https?:\/\//, '')}</span>
@@ -158,7 +167,7 @@ function PartnerProfile({ partner }: { partner: Partner }) {
 
 // ─── Classification List ──────────────────────────────────────────
 
-function ClassificationList({ classification, partners }: { classification: Classification; partners: Partner[] }) {
+function ClassificationList({ classification, partners, onSelectPartner }: { classification: Classification; partners: Partner[]; onSelectPartner: (p: Partner) => void }) {
   const color = getClassificationColor(classification);
 
   return (
@@ -166,12 +175,12 @@ function ClassificationList({ classification, partners }: { classification: Clas
       <div className="flex items-center gap-2">
         <div className="w-3 h-3 rounded-full" style={{ backgroundColor: color }} />
         <span className="text-sm text-text-secondary">
-          {partners.length} partner{partners.length === 1 ? '' : 's'}
+          {partners.length} compan{partners.length === 1 ? 'y' : 'ies'}
         </span>
       </div>
 
       {partners.length === 0 ? (
-        <p className="text-sm text-text-muted italic">No partners in this classification for current filters.</p>
+        <p className="text-sm text-text-muted italic">No companies in this classification for current filters.</p>
       ) : (
         <div className="flex flex-col gap-2">
           {partners.map((p) => (
@@ -184,7 +193,12 @@ function ClassificationList({ classification, partners }: { classification: Clas
               }`}
             >
               <div className="flex items-center gap-2">
-                <p className="text-sm font-medium text-text-primary">{p.name}</p>
+                <button
+                  onClick={() => onSelectPartner(p)}
+                  className="text-sm font-medium text-accent-400 hover:text-accent-300 transition-colors text-left"
+                >
+                  {p.name}
+                </button>
                 {p.partnershipType === 'Product Partnership' && (
                   <span className="text-[10px] font-medium text-partnership-product">Product</span>
                 )}
@@ -207,7 +221,7 @@ function ClassificationList({ classification, partners }: { classification: Clas
 
 // ─── Generic List (for status/category/KPI drill-downs) ─────────
 
-function GenericList({ partners }: { partners: Partner[] }) {
+function GenericList({ partners, onSelectPartner }: { partners: Partner[]; onSelectPartner: (p: Partner) => void }) {
   return (
     <div className="flex flex-col gap-4">
       <span className="text-sm text-text-secondary">
@@ -228,7 +242,12 @@ function GenericList({ partners }: { partners: Partner[] }) {
               }`}
             >
               <div className="flex items-center gap-2">
-                <p className="text-sm font-medium text-text-primary">{p.name}</p>
+                <button
+                  onClick={() => onSelectPartner(p)}
+                  className="text-sm font-medium text-accent-400 hover:text-accent-300 transition-colors text-left"
+                >
+                  {p.name}
+                </button>
                 {p.partnershipType === 'Product Partnership' && (
                   <span className="text-[10px] font-medium text-partnership-product">Product</span>
                 )}
@@ -237,8 +256,8 @@ function GenericList({ partners }: { partners: Partner[] }) {
               <div className="flex items-center gap-3 mt-2">
                 <Badge label={p.classification} variant="classification" />
                 <span className="text-xs text-text-muted">{p.airtableStatus}</span>
-                {p.category && p.category !== 'Uncategorized' && (
-                  <span className="text-xs text-text-muted ml-auto">{p.category}</span>
+                {p.category.some((t) => t !== 'Uncategorized') && (
+                  <span className="text-xs text-text-muted ml-auto">{p.category.filter((t) => t !== 'Uncategorized').join(', ')}</span>
                 )}
               </div>
             </div>

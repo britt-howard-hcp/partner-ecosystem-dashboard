@@ -48,7 +48,7 @@ function applyFilters(partners: Partner[], filters: FilterState): Partner[] {
       if (p.airtableStatus !== filters.airtableStatus) return false;
     }
     if (filters.category !== 'All') {
-      if ((p.category ?? 'Uncategorized') !== filters.category) return false;
+      if (!p.category.includes(filters.category)) return false;
     }
     if (filters.searchQuery) {
       const q = filters.searchQuery.toLowerCase();
