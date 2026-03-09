@@ -76,9 +76,7 @@ export function AskPanel({ onClose }: AskPanelProps) {
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-border">
           <div className="flex items-center gap-2">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" className="text-accent-400">
-              <path d="M12 0L13.5 8.5L20 5L15.5 10.5L24 12L15.5 13.5L20 19L13.5 15.5L12 24L10.5 15.5L4 19L8.5 13.5L0 12L8.5 10.5L4 5L10.5 8.5Z" />
-            </svg>
+            <span className="text-base leading-none">✨</span>
             <h2 className="text-base font-semibold text-text-primary">Ask the Ecosystem</h2>
           </div>
           <button

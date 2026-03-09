@@ -95,7 +95,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     if (!response.ok) {
       const errorText = await response.text();
-      return res.status(response.status).json({ error: 'OpenAI API error', detail: errorText });
+      let detail = errorText;
+      try {
+        const parsed = JSON.parse(errorText);
+        detail = parsed.error?.message || errorText;
+      } catch { /* use raw text */ }
+      return res.status(response.status).json({ error: detail });
     }
 
     res.setHeader('Content-Type', 'text/event-stream');

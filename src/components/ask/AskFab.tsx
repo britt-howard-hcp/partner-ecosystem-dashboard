@@ -10,9 +10,7 @@ export function AskFab({ onClick }: AskFabProps) {
       aria-label="Ask the Ecosystem"
       title="Ask the Ecosystem"
     >
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M12 0L13.5 8.5L20 5L15.5 10.5L24 12L15.5 13.5L20 19L13.5 15.5L12 24L10.5 15.5L4 19L8.5 13.5L0 12L8.5 10.5L4 5L10.5 8.5Z" />
-      </svg>
+      <span className="text-2xl leading-none">✨</span>
     </button>
   );
 }
