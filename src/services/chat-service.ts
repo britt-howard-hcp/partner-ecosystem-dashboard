@@ -1,18 +1,5 @@
-import { matchChatResponse } from '../data/fake-chat-responses';
+// Re-export the Claude chat service as the primary chat interface.
+// The old fake service lived here — now replaced by claude-chat-service.ts
+// which streams responses via the /api/ask serverless function.
 
-export interface ChatService {
-  respond(userMessage: string): Promise<string>;
-}
-
-// --- Fake implementation (swap this export for Claude API later) ---
-
-const fakeChatService: ChatService = {
-  async respond(userMessage: string) {
-    // Simulate slight network delay
-    await new Promise((r) => setTimeout(r, 400));
-    return matchChatResponse(userMessage);
-  },
-};
-
-// SWAP POINT: change to `claudeChatService` when ready
-export const chatService: ChatService = fakeChatService;
+export { askEcosystem } from './claude-chat-service';

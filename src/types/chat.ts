@@ -5,4 +5,10 @@ export interface ChatMessage {
   role: ChatRole;
   content: string;
   timestamp: Date;
+  streaming?: boolean;
+}
+
+export interface ConversationMessage {
+  role: 'user' | 'assistant';
+  content: string;
 }

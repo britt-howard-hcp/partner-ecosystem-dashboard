@@ -13,9 +13,41 @@ This dashboard is Module 5 of a larger agentic ecosystem system. The full system
 Live URL: https://partner-ecosystem-dashboard.vercel.app/
 Auto-deploys from this GitHub repo's main branch.
 
+## Site Protection
+
+### Password Gate
+The dashboard is gated behind a simple shared password. Not real auth — just a gate to keep random visitors out. Implementation:
+- `src/components/auth/PasswordGate.tsx` wraps the entire app in `App.tsx`
+- Password checked against `VITE_SITE_PASSWORD` env var (set in `.env` locally and in Vercel environment variables for production)
+- Auth state stored in `sessionStorage` (`hcp-dashboard-auth`) — persists across refreshes within a browser session, clears on close
+- Dark-themed, centered form matching the dashboard's visual style
+- This is intentionally lightweight — no user management, no OAuth, no login system
+
+### Search Engine Blocking
+The dashboard is blocked from search engine crawling and indexing:
+- `public/robots.txt` — `Disallow: /` for all user agents
+- `index.html` — `<meta name="robots" content="noindex, nofollow" />` meta tag
+- Both layers are needed: robots.txt tells crawlers not to visit, the meta tag tells any crawler that does visit not to index or follow links
+
+## Britt Bot Knowledge Base (IMPORTANT — READ THIS)
+
+Britt has a comprehensive AI knowledge base called "Britt Bot" (also spelled "BrittBot", "brittbot", or "britt bot" — he uses voice input so spelling varies). It lives at `../../knowledge-base/` relative to this project folder.
+
+**Before making assumptions about partners, ecosystem strategy, terminology, classification frameworks, API details, or Britt's preferences — check the knowledge base.** It contains 314+ markdown files with full context on every partner, strategy doc, QBR deck, API analysis, meeting notes, Slack threads, and Gmail context Britt works with.
+
+Key files to know:
+- `../../knowledge-base/CLAUDE.md` — Full map of the knowledge base and how it's organized
+- `../../knowledge-base/BRITT-WRITING-STYLE.md` — Britt's voice and communication style
+- `../../knowledge-base/01-partner-ecosystem/` — Everything by partner (220 files)
+- `../../knowledge-base/02-api-program/` — API usage data, documentation, developer management
+
+When a knowledge base markdown file references an original source file (spreadsheet, deck, etc.), the originals are at `../../context/`.
+
+If Britt asks you to "check with Britt Bot", "check my knowledge base", "what does brittbot say", or any variation — go to `../../knowledge-base/` and find the answer there.
+
 ## Current State (as of late February 2026)
 
-The dashboard has been through a full redesign cycle across 10 commits:
+The dashboard has been through a full redesign cycle across 12 commits:
 
 1. Initial Vite/React scaffold with fake data
 2. Major restructure to HCP terminology, dark theme, classification framework, pipeline kanban
@@ -27,6 +59,10 @@ The dashboard has been through a full redesign cycle across 10 commits:
 8. **Phase 1B:** Category intelligence — category chart, clickable KPIs, status/category filter dropdowns, chart click-to-drill, tooltip fixes
 9. CLAUDE.md updated with Phase 1B results and 1B-fix scope
 10. **Phase 1B-fix:** Multi-select category data model fix, KPI bar reorder/relabel, Market Pulse chart layout, filter consolidation, list-to-profile drill-down
+11. **Phase 2:** Visual polish, EnrichedBadge, Ask the Ecosystem UI shell, pagination
+12. **Phase 2 fix:** Pipeline labels, pie chart clipping, sparkle icon refinement, tooltip text
+13. **Password gate** — `PasswordGate.tsx` wrapping the app, `VITE_SITE_PASSWORD` env var
+14. **Search engine blocking** — `robots.txt` disallow all + noindex/nofollow meta tag
 
 **All Phase 1 work is complete.** The dashboard is a functional market intelligence tool with:
 - Full-width layout (sidebar/chat removed)
@@ -43,7 +79,7 @@ The dashboard has been through a full redesign cycle across 10 commits:
 - Minor spacing/clipping on some chart elements
 - Terminology inconsistencies may remain in some tooltips or edge cases
 
-**What needs to happen now:** Phase 2 — Visual polish, AI enrichment badges, Ask the Ecosystem UI shell, pagination. See Implementation Phases below.
+**All Phase 2 work is complete.** The dashboard now includes EnrichedBadge, Ask the Ecosystem UI shell, pagination, password gate, and search engine blocking. **Next up:** Phase 3 — Claude API integration. See Implementation Phases below.
 
 ---
 
@@ -221,16 +257,15 @@ Unexplored → Initial Call → Discovery → Pilot → Signed Agreements → Li
 - Filters consolidated to one row
 - List-to-profile drill-down in detail panel
 
-### Phase 2 — Visual Polish + AI Foundation ← CURRENT
-See Phase 2 prompt for full details. Summary:
-- Fix chart hover states (white/gray background on bar hover)
-- Fix spacing/clipping on chart elements
-- Build `EnrichedBadge` component (AI sparkle icon + tooltip) — pure visual indicator for fields from overrides
-- Apply EnrichedBadge to all override-sourced fields in table and detail panel
-- Build "Ask the Ecosystem" UI shell — floating action button as primary entry point, slide-out chat panel with placeholder state ("Claude API coming in Phase 3")
-- Add pagination to Ecosystem Directory table
+### Phase 2 — Visual Polish + AI Foundation ✅ COMPLETE
+- Fixed chart hover states, spacing/clipping, pipeline labels, pie chart clipping
+- Built `EnrichedBadge` component (sparkle icon + tooltip for fields from overrides)
+- Applied EnrichedBadge to all override-sourced fields in table and detail panel
+- Built "Ask the Ecosystem" UI shell — floating action button + slide-out chat panel with placeholder state ("Claude API coming in Phase 3")
+- Added pagination to Ecosystem Directory table (25/50/100 rows per page)
 - Final terminology pass across all components
-- Update narrative block if needed
+- Added password gate (`PasswordGate.tsx`, `VITE_SITE_PASSWORD` env var)
+- Added search engine blocking (`robots.txt` + noindex/nofollow meta tag)
 
 ### Phase 3 — Claude API Integration (next)
 - Wire Claude API (`claude-sonnet-4-6`) to Ask the Ecosystem chat panel
@@ -264,6 +299,8 @@ See Phase 2 prompt for full details. Summary:
 - Classification-overrides enrichment pattern
 - Multi-select category handling (arrays throughout the entire data flow)
 - KPI card order: Ecosystem Requests → Live Integrations → In Pipeline → Controlled Requests → Browse Categories
+- Password gate (`PasswordGate.tsx` wrapping the app)
+- Search engine blocking (`robots.txt` + noindex meta tag)
 
 ## Execution Rules
 
