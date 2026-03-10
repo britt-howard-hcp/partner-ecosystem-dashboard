@@ -108,10 +108,14 @@ export function ChatProvider({ children, partners }: ChatProviderProps) {
           setSending(false);
         },
         onError: (error) => {
+          const isQuotaError = error.toLowerCase().includes('quota') || error.toLowerCase().includes('billing') || error.toLowerCase().includes('exceeded');
+          const friendlyMessage = isQuotaError
+            ? 'Ask the Ecosystem is currently unavailable. The AI service needs to be activated — reach out to Britt if you need this feature.'
+            : `Something went wrong. Please try again in a moment.`;
           setMessages((prev) =>
             prev.map((m) =>
               m.id === assistantMsgId
-                ? { ...m, content: `Something went wrong: ${error}`, streaming: false }
+                ? { ...m, content: friendlyMessage, streaming: false }
                 : m,
             ),
           );

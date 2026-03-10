@@ -6,7 +6,7 @@ Britt Howard, Senior Manager of Platform Partnerships at Housecall Pro (HCP). He
 
 ## What This Project Is
 
-A React/Vite dashboard deployed on Vercel that visualizes HCP's partner ecosystem as a market intelligence tool. It connects to Airtable as its data source and will integrate the Claude API for AI-powered enrichment and natural language queries ("Ask the Ecosystem").
+A React/Vite dashboard deployed on Vercel that visualizes HCP's partner ecosystem as a market intelligence tool. It connects to Airtable as its data source and includes an AI-powered "Ask the Ecosystem" chat feature (OpenAI GPT-4o via serverless function).
 
 This dashboard is Module 5 of a larger agentic ecosystem system. The full system vision includes: Smart Intake & Triage (Slack decision loop), Meeting Prep Package (auto-generated Google Docs), Post-Meeting Enrichment (Granola notes → Airtable), Market Intelligence & Reporting (Google Slides decks, Slack queries), and this Dashboard.
 
@@ -18,7 +18,7 @@ Auto-deploys from this GitHub repo's main branch.
 ### Password Gate
 The dashboard is gated behind a simple shared password. Not real auth — just a gate to keep random visitors out. Implementation:
 - `src/components/auth/PasswordGate.tsx` wraps the entire app in `App.tsx`
-- Password checked against `VITE_SITE_PASSWORD` env var (set in `.env` locally and in Vercel environment variables for production)
+- Password checked against `VITE_SITE_PASSWORD` env var (set in `.env.local` locally and in Vercel environment variables for production)
 - Auth state stored in `sessionStorage` (`hcp-dashboard-auth`) — persists across refreshes within a browser session, clears on close
 - Dark-themed, centered form matching the dashboard's visual style
 - This is intentionally lightweight — no user management, no OAuth, no login system
@@ -45,41 +45,38 @@ When a knowledge base markdown file references an original source file (spreadsh
 
 If Britt asks you to "check with Britt Bot", "check my knowledge base", "what does brittbot say", or any variation — go to `../../knowledge-base/` and find the answer there.
 
-## Current State (as of late February 2026)
+## Current State (as of March 2026)
 
-The dashboard has been through a full redesign cycle across 12 commits:
+The dashboard has been through a full redesign cycle. Phases 1-2 built the core market intelligence tool. Phase 3 added the Ask the Ecosystem AI chat feature (frontend complete, backend wired to OpenAI GPT-4o, pending API credits to go live).
 
+Commit history:
 1. Initial Vite/React scaffold with fake data
 2. Major restructure to HCP terminology, dark theme, classification framework, pipeline kanban
 3. Airtable connection via Vercel serverless proxy, classification-overrides enrichment layer, real partner data
 4. Field mapping fix (Company name → App, Date → Added)
 5. CLAUDE.md and dashboard design review added
 6. **Phase 1A:** Layout redesign — pipeline kanban demoted, market intelligence-first layout, partner table as primary view, KPI bar, Market Pulse charts, narrative block
-7. CLAUDE.md updated with Phase 1A results and Phase 1B scope
-8. **Phase 1B:** Category intelligence — category chart, clickable KPIs, status/category filter dropdowns, chart click-to-drill, tooltip fixes
-9. CLAUDE.md updated with Phase 1B results and 1B-fix scope
-10. **Phase 1B-fix:** Multi-select category data model fix, KPI bar reorder/relabel, Market Pulse chart layout, filter consolidation, list-to-profile drill-down
-11. **Phase 2:** Visual polish, EnrichedBadge, Ask the Ecosystem UI shell, pagination
-12. **Phase 2 fix:** Pipeline labels, pie chart clipping, sparkle icon refinement, tooltip text
-13. **Password gate** — `PasswordGate.tsx` wrapping the app, `VITE_SITE_PASSWORD` env var
-14. **Search engine blocking** — `robots.txt` disallow all + noindex/nofollow meta tag
+7. **Phase 1B:** Category intelligence — category chart, clickable KPIs, status/category filter dropdowns, chart click-to-drill, tooltip fixes
+8. **Phase 1B-fix:** Multi-select category data model fix, KPI bar reorder/relabel, Market Pulse chart layout, filter consolidation, list-to-profile drill-down
+9. **Phase 2:** Visual polish, EnrichedBadge, Ask the Ecosystem UI shell, pagination
+10. **Phase 2 fix:** Pipeline labels, pie chart clipping, sparkle icon refinement, tooltip text
+11. **Password gate** — `PasswordGate.tsx` wrapping the app, `VITE_SITE_PASSWORD` env var
+12. **Search engine blocking** — `robots.txt` disallow all + noindex/nofollow meta tag
+13. **Phase 3:** Ask the Ecosystem — live AI chat with streaming (OpenAI GPT-4o via `api/ask.ts`)
+14. **Phase 3 polish:** ✨ emoji cleanup, default sort by request date (newest first), error detail passthrough
 
-**All Phase 1 work is complete.** The dashboard is a functional market intelligence tool with:
+**All Phase 1 and Phase 2 work is complete.** The dashboard is a functional market intelligence tool with:
 - Full-width layout (sidebar/chat removed)
 - KPI bar: Ecosystem Requests → Live Integrations → In Pipeline → Controlled Requests → Browse Categories
 - Consolidated filter bar: search, date range, classification, integration type, status (real Airtable stages), category (multi-select tags)
 - Market Pulse: Category Distribution (left, large), Pipeline Stages (top-right), Classifications (bottom-right)
 - Auto-generated analyst narrative
-- Sortable/filterable partner table (Ecosystem Directory) as the primary view
+- Sortable/filterable partner table (Ecosystem Directory) — default sort: request date, newest first
 - Slide-out detail panel with drill-down from any list view
 - Multi-select category handling throughout (data model, charts, filters, table, detail panel)
+- EnrichedBadge (✨) on override-sourced fields
 
-**Known cosmetic issues (to fix in Phase 2):**
-- Chart hover states show full-width white/gray background instead of contained highlight
-- Minor spacing/clipping on some chart elements
-- Terminology inconsistencies may remain in some tooltips or edge cases
-
-**All Phase 2 work is complete.** The dashboard now includes EnrichedBadge, Ask the Ecosystem UI shell, pagination, password gate, and search engine blocking. **Next up:** Phase 3 — Claude API integration. See Implementation Phases below.
+**Phase 3 status:** Frontend complete. The Ask the Ecosystem chat panel streams real AI responses via `api/ask.ts` → OpenAI GPT-4o. **Currently paused** — needs OpenAI API credits loaded to function. The feature degrades gracefully (shows a friendly message when the API is unavailable). When ready, add credits at platform.openai.com and it goes live instantly.
 
 ---
 
@@ -117,13 +114,21 @@ Auto-generated paragraph referencing: top category by tag count, selectivity rat
 
 ### Section 5: Ecosystem Directory (partner table)
 
-Sortable, filterable table. Columns: Company Name, Status (real Airtable stage), Classification, Category (pill badges for multi-select tags), Integration Type, Partnership Type, Customer Count, Mutual Customers, Request Date.
+Sortable, filterable table. Default sort: request date, newest first. Columns: Company Name, Status (real Airtable stage), Classification, Category (pill badges for multi-select tags), Integration Type, Partnership Type, Customer Count, Mutual Customers, Request Date.
 
-Features: click row → detail panel, sort by column header, Product Partnerships get gold/amber row highlight, search works across all fields.
+Features: click row → detail panel, sort by column header, Product Partnerships get gold/amber row highlight, search works across all fields, pagination (25/50/100 per page).
 
 ### Section 6: Detail Panel (slide-out)
 
 Four sections: Company Overview, Integration Details, Business Case, Relationship. Supports navigation: list view → company profile → back. All category tags displayed.
+
+### Section 7: Ask the Ecosystem (AI chat)
+
+Floating ✨ button (bottom-right) opens a slide-out chat panel. Users ask natural language questions about the ecosystem and receive streaming AI responses powered by GPT-4o. The full partner dataset is serialized and sent as context on the first message. Follow-up messages include conversation history (sliding window of last 10 messages). Rate limited to 20 questions per session.
+
+**Architecture:** Client (`AskPanel.tsx`) → `claude-chat-service.ts` (SSE reader) → `api/ask.ts` (Vercel serverless function) → OpenAI Chat Completions API (streaming). The serverless function translates OpenAI's SSE format into a normalized `{ text: "..." }` format so the frontend is provider-agnostic.
+
+**Status:** Paused — requires OpenAI API credits. Feature degrades gracefully when unavailable.
 
 ---
 
@@ -196,6 +201,10 @@ Maps Airtable records to Partner interface. Handles: multi-select category array
 
 Vercel serverless function. Paginates through Airtable API. Server-side filter: `NOT({Status}='')`. Uses env vars: `AIRTABLE_PAT`, `AIRTABLE_BASE_ID`, `AIRTABLE_TABLE_NAME`. 60-second cache with stale-while-revalidate. No changes needed — it already returns all fields.
 
+### Ask the Ecosystem API (`api/ask.ts`)
+
+Vercel serverless function. Receives POST with `{ messages, partnerContext? }`. Calls OpenAI Chat Completions API (GPT-4o) with streaming. System prompt includes HCP terminology, classification framework, and pipeline stages. Partner dataset sent as compact pipe-delimited rows (~25K tokens for ~200 partners). Streams SSE responses in normalized `{ text: "..." }` format. Env var: `OPENAI_API_KEY`.
+
 ---
 
 ## Ecosystem Strategy Framework
@@ -259,32 +268,52 @@ Unexplored → Initial Call → Discovery → Pilot → Signed Agreements → Li
 
 ### Phase 2 — Visual Polish + AI Foundation ✅ COMPLETE
 - Fixed chart hover states, spacing/clipping, pipeline labels, pie chart clipping
-- Built `EnrichedBadge` component (sparkle icon + tooltip for fields from overrides)
+- Built `EnrichedBadge` component (✨ + tooltip for fields from overrides)
 - Applied EnrichedBadge to all override-sourced fields in table and detail panel
-- Built "Ask the Ecosystem" UI shell — floating action button + slide-out chat panel with placeholder state ("Claude API coming in Phase 3")
+- Built "Ask the Ecosystem" UI shell — floating action button + slide-out chat panel
 - Added pagination to Ecosystem Directory table (25/50/100 rows per page)
 - Final terminology pass across all components
 - Added password gate (`PasswordGate.tsx`, `VITE_SITE_PASSWORD` env var)
 - Added search engine blocking (`robots.txt` + noindex/nofollow meta tag)
 
-### Phase 3 — Claude API Integration (next)
-- Wire Claude API (`claude-sonnet-4-6`) to Ask the Ecosystem chat panel
-- Give Claude access to partner dataset as context
-- AI-powered record enrichment — Claude fills sparse fields (category, description, integration assessment)
+### Phase 3 — Ask the Ecosystem AI Chat ✅ FRONTEND COMPLETE (API paused)
+- Built `api/ask.ts` — Vercel serverless function calling OpenAI GPT-4o with streaming
+- Built `src/services/claude-chat-service.ts` — client-side SSE stream reader
+- Rewrote `ChatContext.tsx` — partner data serialization, streaming message accumulation, conversation history (sliding window), 20-question session rate limit
+- Rewrote `AskPanel.tsx` — live chat with streaming text + cursor, clickable example queries, rate limit display
+- System prompt includes HCP terminology, classification framework, pipeline stages
+- Partner dataset sent as compact pipe-delimited format (~25K tokens) on first message only
+- Graceful degradation when API is unavailable
+- **Paused:** Needs OpenAI API credits loaded. Add credits at platform.openai.com and it goes live instantly.
+
+### Phase 3 — Remaining (when API is live)
+- AI-powered record enrichment — AI fills sparse fields (category, description, integration assessment)
 - Dynamic narrative block that reasons about the data
 - EnrichedBadge reused for AI-generated values (same component, new source)
 - "Enrich this record" action in detail panel
 
 ### Phase 4 — Agentic Modules (future)
-- Module 1: Smart Intake & Triage — form → Claude classifies → Slack notification → emoji reaction → auto-email → Airtable update
+- Module 1: Smart Intake & Triage — form → AI classifies → Slack notification → emoji reaction → auto-email → Airtable update
 - Module 2: Meeting Prep Package — auto-generated Google Doc with partner info and prep brief
-- Module 3: Post-Meeting Enrichment — Granola notes → Claude extracts structured data → Airtable
+- Module 3: Post-Meeting Enrichment — Granola notes → AI extracts structured data → Airtable
 - Module 4A: One-click Google Slides ecosystem deck
 - Module 4B: Natural language Slack query layer
 
 ### Dropped from scope
 - ~~Table/Board view toggle~~ — kanban is the wrong metaphor for this data. If needed later, it's a one-prompt add.
 - ~~Kanban with real Airtable stages~~ — same reason. Table view is the primary and only view.
+
+---
+
+## Environment Variables
+
+| Variable | Where | Purpose |
+|---|---|---|
+| `AIRTABLE_PAT` | Vercel + `.env.local` | Airtable API personal access token |
+| `AIRTABLE_BASE_ID` | Vercel + `.env.local` | Airtable base ID |
+| `AIRTABLE_TABLE_NAME` | Vercel + `.env.local` | Airtable table name (default: "Partner Directory") |
+| `VITE_SITE_PASSWORD` | Vercel + `.env.local` | Password gate (exposed to client via Vite) |
+| `OPENAI_API_KEY` | Vercel + `.env.local` | OpenAI API key for Ask the Ecosystem (server-side only) |
 
 ---
 
@@ -301,12 +330,13 @@ Unexplored → Initial Call → Discovery → Pilot → Signed Agreements → Li
 - KPI card order: Ecosystem Requests → Live Integrations → In Pipeline → Controlled Requests → Browse Categories
 - Password gate (`PasswordGate.tsx` wrapping the app)
 - Search engine blocking (`robots.txt` + noindex meta tag)
+- Default table sort: request date, newest first
+- Ask the Ecosystem streaming architecture (provider-agnostic SSE normalization)
 
 ## Execution Rules
 
 - All data lives in Airtable or `src/data/classification-overrides.ts` — never hardcode data in components
-- Use `claude-sonnet-4-6` as the Claude API model (Phase 3)
 - Keep all API keys in environment variables, never hardcoded
 - Dashboard is read-only — no write operations to Airtable from the frontend
 - When in doubt on terminology, refer to the terminology table above
-- Read `docs/dashboard-design-review.md` for the full reasoning behind design decisions
+- Read `docs/dashboard-design-review.md` for the historical reasoning behind design decisions (note: CLAUDE.md is the authoritative spec, the design review is historical context)

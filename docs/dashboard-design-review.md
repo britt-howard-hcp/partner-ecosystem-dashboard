@@ -1,13 +1,15 @@
 # Dashboard Design Review — February 2026
 
-**Status:** v3 — Final (pending Britt approval)
+> **Historical document.** This design review drove Phases 1A through 2. The authoritative spec for the dashboard's current state is `CLAUDE.md` in the project root. This file is kept for design reasoning and decision context.
+
+**Status:** Implemented — Phases 1A/1B/2 completed per these recommendations. Phase 1C (view toggle) was dropped from scope.
 **Purpose:** Reassess the dashboard layout and functionality now that real data is connected and the product vision is clearer.
 
 ---
 
 ## What This Document Is
 
-This is a design review based on an interview with Britt about how the dashboard is actually used, who sees it, and what questions it needs to answer. It identifies what's working, what isn't, and proposes a revised layout. Once approved, this becomes the source of truth that Claude Code works from.
+This is a design review based on an interview with Britt about how the dashboard is actually used, who sees it, and what questions it needs to answer. It identifies what's working, what isn't, and proposes a revised layout. The implementation that followed this review is documented in `CLAUDE.md`.
 
 ---
 
