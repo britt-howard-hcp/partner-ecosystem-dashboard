@@ -1,7 +1,39 @@
-import type { Partner, Status } from '../types/partner';
+import type {
+  Classification,
+  IntegrationType,
+  Partner,
+  PartnershipType,
+  Status,
+} from '../types/partner';
 import type { PartnerService } from './partner-service';
 import { getOverride, mapStatus } from '../data/classification-overrides';
 import { partners as fakePartners } from '../data/partners';
+
+const VALID_CLASSIFICATIONS: Classification[] = ['Core Conflict', 'Controlled', 'Open'];
+const VALID_INTEGRATION_TYPES: IntegrationType[] = [
+  'API',
+  'Webhook',
+  'OAuth',
+  'Embedded',
+  'Data Sync',
+  'White Label',
+];
+const VALID_PARTNERSHIP_TYPES: PartnershipType[] = [
+  'Product Partnership',
+  'Ecosystem Partnership',
+];
+
+function pickClassification(raw: string): Classification | undefined {
+  return VALID_CLASSIFICATIONS.find((c) => c === raw);
+}
+
+function pickIntegrationType(raw: string): IntegrationType | undefined {
+  return VALID_INTEGRATION_TYPES.find((c) => c === raw);
+}
+
+function pickPartnershipType(raw: string): PartnershipType | undefined {
+  return VALID_PARTNERSHIP_TYPES.find((c) => c === raw);
+}
 
 interface AirtableRecord {
   id: string;
@@ -66,12 +98,11 @@ function mapRecord(record: AirtableRecord): Partner {
   // Category: Airtable multi-select returns an array. Override fallback is a single string wrapped in [].
   const rawCategory = f['Category'];
   let category: string[];
-  const enrichedFields: string[] = ['classification', 'integrationType', 'partnershipType'];
+  const enrichedFields: string[] = [];
 
   if (Array.isArray(rawCategory) && rawCategory.length > 0) {
     category = rawCategory.map((tag: unknown) => normalizeCategory(String(tag).trim())).filter(Boolean);
   } else if (typeof rawCategory === 'string' && rawCategory.trim()) {
-    // Shouldn't happen for multi-select but handle gracefully
     category = [normalizeCategory(rawCategory.trim())];
   } else if (override.category) {
     category = [override.category];
@@ -80,26 +111,58 @@ function mapRecord(record: AirtableRecord): Partner {
     category = ['Uncategorized'];
   }
 
+  // Prefer Airtable values for the classification trio (Ecosystem 2.0 Phase 1
+  // migration 0002 populated these for 67 partners). Fall back to the override
+  // file for partners not yet covered by the migration.
+  const airtableClassification = pickClassification(str(f['Classification']));
+  const classification: Classification = airtableClassification ?? override.classification;
+  if (!airtableClassification) enrichedFields.push('classification');
+
+  const airtableIntegrationType = pickIntegrationType(str(f['Integration Type']));
+  const integrationType: IntegrationType = airtableIntegrationType ?? override.integrationType;
+  if (!airtableIntegrationType) enrichedFields.push('integrationType');
+
+  const airtablePartnershipType = pickPartnershipType(str(f['Partnership Type']));
+  const partnershipType: PartnershipType =
+    airtablePartnershipType ?? override.partnershipType;
+  if (!airtablePartnershipType) enrichedFields.push('partnershipType');
+
+  const rawWorkstreams = f['Active Workstreams'];
+  const activeWorkstreams = Array.isArray(rawWorkstreams)
+    ? rawWorkstreams.map((w: unknown) => String(w).trim()).filter(Boolean)
+    : undefined;
+
+  const strategicTierRaw = f['Strategic Tier'];
+  const strategicTier =
+    strategicTierRaw != null && strategicTierRaw !== ''
+      ? parseNum(strategicTierRaw)
+      : undefined;
+
   return {
     id: record.id,
     name,
     website: strOrUndef(f['Website']),
     description: strOrUndef(f['Description']) || strOrUndef(f['Recommendation']),
-    classification: override.classification,
-    partnershipType: override.partnershipType,
+    classification,
+    partnershipType,
     status: dashboardStatus,
-    integrationType: override.integrationType,
+    integrationType,
     requestDate: strOrUndef(f['Added']) || record.createdTime?.slice(0, 10) || undefined,
     customerCount: parseNum(f['Customers']) || parseNum(f['# Pros']) || undefined,
     integrationRequest: strOrUndef(f['Proposed Integration']),
     whyIntegrate: strOrUndef(f['Recommendation']),
     mutualCustomers: parseMutualPros(f['Mutual Pros']),
-    contactName: strOrUndef(f['Name (from Contacts)']),
-    contactEmail: strOrUndef(f['Email (from Contacts)']),
+    contactName: strOrUndef(f['Name (from Contacts)']) || strOrUndef(f['Contact Name']),
+    contactEmail: strOrUndef(f['Email (from Contacts)']) || strOrUndef(f['Contact Email']),
     notes: strOrUndef(f['Notes URL']),
     category,
     airtableStatus: rawStatus,
     enrichedFields,
+    owner: strOrUndef(f['Owner']),
+    slug: strOrUndef(f['Slug']),
+    lastTouch: strOrUndef(f['Last Touch']),
+    strategicTier: strategicTier && strategicTier > 0 ? strategicTier : undefined,
+    activeWorkstreams: activeWorkstreams && activeWorkstreams.length > 0 ? activeWorkstreams : undefined,
   };
 }
 

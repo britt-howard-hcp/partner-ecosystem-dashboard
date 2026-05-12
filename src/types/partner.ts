@@ -26,4 +26,11 @@ export interface Partner {
   category: string[];
   airtableStatus: string;
   enrichedFields: string[];
+
+  // Ecosystem 2.0 Phase 1 fields (added to Airtable Main 2026-05-01)
+  owner?: string;
+  slug?: string;
+  lastTouch?: string;
+  strategicTier?: number;
+  activeWorkstreams?: string[];
 }

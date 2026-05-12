@@ -98,8 +98,8 @@ These knowledge base files are relevant when working on the dashboard:
 | File | What it provides |
 |---|---|
 | `01-partner-ecosystem/` (220 files) | Per-partner context for detail panel, classification decisions |
-| `02-api-program/api-usage-by-org.md` | API request data (29,443 orgs) — informs integration type classification |
-| `02-api-program/api-surface-audit.md` | Endpoint inventory, auth model — informs integration type options |
+| `02-api-program/usage-data/api-requests-by-org.md` | API request data (29,443 orgs) — informs integration type classification |
+| `~/Claude/deliverables/hcp-api-surface-audit-v2.md` | Endpoint inventory, auth model — informs integration type options |
 | `03-reporting-and-data/qbr-decks/` | QBR decks (Jan 2025–Feb 2026) — ecosystem metrics, partner counts |
 | `01-partner-ecosystem/partner-directory/` | Airtable export context, category taxonomy, status definitions |
 

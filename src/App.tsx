@@ -8,6 +8,7 @@ import { FilterBar } from './components/filters/FilterBar';
 import { MarketPulse } from './components/charts/MarketPulse';
 import { NarrativeBlock } from './components/narrative/NarrativeBlock';
 import { PartnerTable } from './components/table/PartnerTable';
+import { FunnelView } from './components/funnel/FunnelView';
 import { DetailPanel } from './components/detail/DetailPanel';
 import { AskFab } from './components/ask/AskFab';
 import { AskPanel } from './components/ask/AskPanel';
@@ -34,6 +35,7 @@ export default function App() {
           <MarketPulse />
           <NarrativeBlock />
           <PartnerTable />
+          <FunnelView />
         </DashboardShell>
         <DetailPanel />
         <AskTheEcosystem />
